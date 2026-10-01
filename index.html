@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Robô Letrinha</title>
+  <meta name="description" content="Jogo de alfabetização e programação para o 1º, 2º e 3º ano do Ensino Fundamental.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Andika:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/estilo.css">
+</head>
+<body>
+  <!-- Tela inicial: escolha do ano -->
+  <section id="tela-inicio" class="tela ativa">
+    <header class="topo-inicio">
+      <div class="mascote" aria-hidden="true">🤖</div>
+      <h1>Robô Letrinha</h1>
+      <p class="lema">Programe o robô para pegar as letras e formar palavras!</p>
+    </header>
+    <div id="lista-anos" class="lista-anos"></div>
+    <div class="acoes-inicio">
+      <button id="btn-como-jogar" class="btn secundario">❓ Como jogar</button>
+      <button id="btn-som" class="btn secundario" aria-pressed="true">🔊 Som ligado</button>
+    </div>
+  </section>
+
+  <!-- Tela de fases -->
+  <section id="tela-fases" class="tela">
+    <header class="barra">
+      <button class="btn icone" data-voltar="inicio" aria-label="Voltar">⬅</button>
+      <h2 id="titulo-fases"></h2>
+    </header>
+    <p id="descricao-fases" class="descricao-fases"></p>
+    <div id="lista-fases" class="lista-fases"></div>
+  </section>
+
+  <!-- Tela do jogo -->
+  <section id="tela-jogo" class="tela">
+    <header class="barra">
+      <button class="btn icone" data-voltar="fases" aria-label="Voltar para as fases">⬅</button>
+      <h2 id="titulo-jogo"></h2>
+      <div class="estrelas-meta" id="meta-blocos"></div>
+    </header>
+
+    <div class="jogo">
+      <div class="coluna-tabuleiro">
+        <div class="missao">
+          <div class="figura" id="figura" aria-hidden="true"></div>
+          <div>
+            <div class="rotulo">Forme a palavra:</div>
+            <div class="encaixes" id="encaixes"></div>
+          </div>
+          <button class="btn icone" id="btn-ouvir" aria-label="Ouvir a palavra">🔊</button>
+        </div>
+        <div class="tabuleiro" id="tabuleiro"></div>
+        <div class="mensagem" id="mensagem" role="status" aria-live="polite"></div>
+      </div>
+
+      <div class="coluna-programa">
+        <div class="painel">
+          <div class="rotulo">Blocos de comando</div>
+          <div class="paleta" id="paleta"></div>
+        </div>
+        <div class="painel">
+          <div class="rotulo">
+            Programa do robô
+            <span id="contador-blocos" class="contador"></span>
+          </div>
+          <ol class="programa" id="programa" aria-label="Programa"></ol>
+        </div>
+        <div class="controles">
+          <button class="btn principal" id="btn-executar">▶ Executar</button>
+          <button class="btn secundario" id="btn-apagar" title="Apagar o último bloco">⌫ Apagar</button>
+          <button class="btn secundario" id="btn-limpar" title="Apagar todos os blocos">🗑 Limpar</button>
+          <button class="btn secundario" id="btn-dica">💡 Dica</button>
+          <button class="btn secundario" id="btn-velocidade" title="Velocidade do robô">🐢 Devagar</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Janela de vitória -->
+  <div class="modal" id="modal-vitoria" hidden>
+    <div class="cartao">
+      <div class="confete" id="confete" aria-hidden="true"></div>
+      <h2>Muito bem!</h2>
+      <div class="vitoria-figura" id="vitoria-figura"></div>
+      <div class="vitoria-palavra" id="vitoria-palavra"></div>
+      <div class="vitoria-estrelas" id="vitoria-estrelas"></div>
+      <p class="vitoria-dica" id="vitoria-dica"></p>
+      <div class="vitoria-frase" id="vitoria-frase" hidden>
+        <div class="rotulo">Leia a frase:</div>
+        <p id="frase-texto"></p>
+        <button class="btn secundario" id="btn-ouvir-frase">🔊 Ouvir a frase</button>
+      </div>
+      <div class="controles">
+        <button class="btn secundario" id="btn-repetir-fase">↺ Jogar de novo</button>
+        <button class="btn principal" id="btn-proxima">Próxima fase ➜</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Janela de ajuda -->
+  <div class="modal" id="modal-ajuda" hidden>
+    <div class="cartao ajuda">
+      <h2>Como jogar</h2>
+      <ol>
+        <li>Olhe a figura e a palavra que o robô precisa formar.</li>
+        <li>Toque nas <b>setas</b> para montar o programa: cada seta faz o robô andar <b>uma casa</b>.</li>
+        <li>O robô pega a peça quando passa por cima dela. Pegue as peças <b>na ordem certa</b>!</li>
+        <li>Cuidado com as <b>pedras</b> 🪨 e com as peças que não fazem parte da palavra.</li>
+        <li>No 2º e 3º ano, use o bloco <b>🔁 REPETIR</b>: ele repete a seta que vem logo depois. Toque no número para mudar.</li>
+        <li>No 3º ano existe um <b>limite de blocos</b>: pense no caminho mais curto!</li>
+        <li>Toque em <b>▶ Executar</b>. Se der errado, arrume o programa e tente de novo.</li>
+      </ol>
+      <p class="ajuda-teclado">Teclado: setas adicionam blocos, <b>R</b> adiciona repetir, <b>Enter</b> executa e <b>Backspace</b> apaga.</p>
+      <div class="controles">
+        <button class="btn principal" id="btn-fechar-ajuda">Entendi!</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/dados.js"></script>
+  <script src="js/fases.js"></script>
+  <script src="js/jogo.js"></script>
+</body>
+</html>
