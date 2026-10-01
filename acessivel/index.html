@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Robô Letrinha Acessível</title>
+  <meta name="description" content="Versão acessível do Robô Letrinha para alunos cegos: jogo de alfabetização e programação pelo teclado, com voz e sons.">
+  <link rel="stylesheet" href="estilo.css">
+</head>
+<body>
+  <!-- Anúncios para o leitor de tela. Só recebe texto quando a voz do jogo está desligada. -->
+  <div id="anuncios" class="so-leitor" aria-live="polite" aria-atomic="false"></div>
+
+  <main id="app" role="application" aria-roledescription="jogo" aria-label="Robô Letrinha acessível. Aperte H para ouvir a ajuda.">
+
+    <!-- Tela de entrada: o navegador só libera som depois de uma tecla. -->
+    <section id="tela-entrada" class="tela ativa" aria-labelledby="titulo-entrada">
+      <h1 id="titulo-entrada">🤖 Robô Letrinha</h1>
+      <p class="grande">Versão acessível, com voz e sons.</p>
+      <button id="btn-comecar" class="botao enorme" autofocus>Aperte Enter para começar</button>
+      <p class="aviso">Use fones de ouvido: os sons mostram a direção.</p>
+      <p class="aviso">Usa o NVDA? No menu, escolha “Voz do jogo” e aperte Enter para desligar a voz do jogo.</p>
+    </section>
+
+    <!-- Menu: setas para cima e para baixo escolhem, Enter confirma. -->
+    <section id="tela-menu" class="tela" aria-labelledby="titulo-menu">
+      <h1 id="titulo-menu">Menu</h1>
+      <ul id="lista-menu" class="menu" role="list"></ul>
+      <p class="aviso">Setas ↑ ↓ escolhem · Enter confirma · Esc volta · Espaço repete · H ajuda</p>
+    </section>
+
+    <!-- Jogo -->
+    <section id="tela-jogo" class="tela" aria-labelledby="titulo-jogo">
+      <header class="topo">
+        <h1 id="titulo-jogo"></h1>
+        <p id="etapa-jogo" class="etapa"></p>
+      </header>
+
+      <div class="painel-palavra">
+        <span class="rotulo">Palavra:</span>
+        <ol id="encaixes" class="encaixes" aria-label="Peças da palavra"></ol>
+      </div>
+
+      <div class="area">
+        <div id="tabuleiro" class="tabuleiro" aria-hidden="true"></div>
+
+        <div class="lateral">
+          <div class="painel">
+            <h2>Programa</h2>
+            <ol id="programa" class="programa" aria-label="Comandos do programa"></ol>
+          </div>
+          <div class="painel teclas" aria-hidden="true">
+            <h2>Teclas</h2>
+            <ul>
+              <li><kbd>← ↑ → ↓</kbd> põe um comando</li>
+              <li><kbd>Enter</kbd> o robô anda</li>
+              <li><kbd>⌫</kbd> apaga o último</li>
+              <li><kbd>Espaço</kbd> repete a instrução</li>
+              <li><kbd>L</kbd> onde estão as peças</li>
+              <li><kbd>P</kbd> fala a palavra</li>
+              <li><kbd>H</kbd> ajuda · <kbd>Esc</kbd> menu</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- O que o jogo está falando, em letras grandes, para a turma acompanhar. -->
+    <div id="fala" class="fala" aria-hidden="true"></div>
+  </main>
+
+  <p class="rodape"><a href="../index.html">Voltar para o Robô Letrinha original</a></p>
+
+  <script src="dados.js"></script>
+  <script src="fases.js"></script>
+  <script src="som.js"></script>
+  <script src="jogo.js"></script>
+</body>
+</html>

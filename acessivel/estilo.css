@@ -1,0 +1,141 @@
+/* Alto contraste: fundo preto, letras brancas e amarelas, tudo grande. */
+:root {
+  --fundo: #000000;
+  --texto: #ffffff;
+  --destaque: #ffe600;
+  --azul: #6fd3ff;
+  --verde: #4dff88;
+  --erro: #ff6b6b;
+  --casa: #141414;
+  --linha: #ffffff;
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; }
+
+body {
+  background: var(--fundo);
+  color: var(--texto);
+  font-family: Verdana, Tahoma, system-ui, sans-serif;
+  font-size: 24px;
+  line-height: 1.4;
+}
+
+.so-leitor {
+  position: absolute; width: 1px; height: 1px; overflow: hidden;
+  clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap;
+}
+
+main { max-width: 1200px; margin: 0 auto; padding: 16px; outline: none; }
+
+.tela { display: none; }
+.tela.ativa { display: block; }
+
+h1 { font-size: 48px; margin: 8px 0 16px; color: var(--destaque); }
+h2 { font-size: 26px; margin: 0 0 10px; color: var(--destaque); }
+.grande { font-size: 32px; }
+.aviso { font-size: 22px; color: var(--azul); }
+
+.botao {
+  display: block; width: 100%;
+  background: var(--fundo); color: var(--texto);
+  border: 4px solid var(--texto); border-radius: 14px;
+  font: inherit; font-size: 28px; font-weight: 700; text-align: left;
+  padding: 14px 20px; cursor: pointer;
+}
+.botao.enorme { font-size: 40px; text-align: center; padding: 28px; margin: 24px 0; }
+.botao:focus, .botao.focado {
+  outline: 6px solid var(--destaque); outline-offset: 4px;
+  background: var(--destaque); color: #000;
+}
+
+.menu { list-style: none; padding: 0; margin: 0; display: grid; gap: 14px; }
+
+/* ---------- Jogo ---------- */
+.topo { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 24px; }
+.topo h1 { margin-bottom: 4px; }
+.etapa { margin: 0 0 12px; color: var(--azul); }
+
+.painel-palavra { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; margin-bottom: 16px; }
+.rotulo { font-weight: 700; }
+.encaixes { list-style: none; display: flex; gap: 10px; padding: 0; margin: 0; flex-wrap: wrap; }
+.encaixes li {
+  min-width: 72px; padding: 6px 12px; text-align: center;
+  border: 4px dashed #8a8a8a; border-radius: 12px;
+  font-size: 40px; font-weight: 700; color: #8a8a8a;
+  display: flex; flex-direction: column; line-height: 1.1;
+}
+.encaixes li small { font-size: 30px; }
+.encaixes li.proximo { border-color: var(--destaque); color: var(--destaque); border-style: solid; }
+.encaixes li.cheio { border: 4px solid var(--verde); background: var(--verde); color: #000; }
+
+.area { display: grid; grid-template-columns: minmax(0, 1fr) minmax(280px, 0.8fr); gap: 20px; align-items: start; }
+@media (max-width: 860px) { .area { grid-template-columns: 1fr; } }
+
+.tabuleiro {
+  --n: 3;
+  display: grid;
+  grid-template-columns: repeat(var(--n), 1fr);
+  grid-template-rows: repeat(var(--n), 1fr);
+  aspect-ratio: 1;
+  width: 100%;
+  max-width: 560px;
+  border: 6px solid var(--linha);
+  border-radius: 8px;
+  gap: 4px;
+  background: var(--linha);
+}
+.casa {
+  background: var(--casa);
+  position: relative;
+  display: flex; align-items: center; justify-content: center;
+}
+.peca {
+  width: 80%; height: 80%;
+  border: 5px solid var(--azul); border-radius: 14px;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  font-size: calc(min(90vw, 560px) / var(--n) * 0.3); font-weight: 700; line-height: 1;
+  background: #000;
+}
+.peca small { font-size: 0.7em; margin-top: 4px; }
+.peca.proxima { border-color: var(--destaque); color: var(--destaque); border-width: 7px; }
+.peca.errada { border-color: var(--erro); color: var(--erro); border-style: dashed; }
+.robo {
+  position: absolute; inset: 0;
+  display: flex; align-items: flex-start; justify-content: flex-end;
+  font-size: calc(min(90vw, 560px) / var(--n) * 0.38);
+  padding: 4px;
+}
+.casa:not(:has(.peca)) .robo { align-items: center; justify-content: center; font-size: calc(min(90vw, 560px) / var(--n) * 0.6); }
+.robo.bateu { animation: tremer 0.4s; }
+.casa:has(.robo) { background: #2a2a00; box-shadow: inset 0 0 0 6px var(--destaque); }
+
+.painel { border: 4px solid var(--texto); border-radius: 14px; padding: 14px; margin-bottom: 16px; }
+.programa { margin: 0; padding-left: 52px; font-size: 28px; font-weight: 700; }
+.programa li { padding: 2px 8px; border-radius: 8px; margin-bottom: 4px; }
+.programa li.vazio { list-style: none; margin-left: -40px; color: #8a8a8a; font-weight: 400; }
+.programa li.testado { color: var(--verde); }
+.programa li.ativo { background: var(--destaque); color: #000; }
+.programa li.erro { background: var(--erro); color: #000; }
+.teclas ul { list-style: none; margin: 0; padding: 0; font-size: 21px; }
+.teclas li { margin-bottom: 6px; }
+kbd {
+  border: 2px solid var(--texto); border-radius: 6px; padding: 0 6px;
+  font-family: inherit; font-weight: 700; color: var(--destaque);
+}
+
+#tela-jogo.venceu .tabuleiro { border-color: var(--verde); background: var(--verde); }
+
+/* O que está sendo falado, para a turma acompanhar. */
+.fala {
+  margin-top: 20px; padding: 16px 20px; min-height: 80px;
+  border: 4px solid var(--destaque); border-radius: 14px;
+  font-size: 28px;
+}
+.fala:empty { display: none; }
+
+.rodape { max-width: 1200px; margin: 0 auto; padding: 8px 16px 24px; font-size: 20px; }
+.rodape a { color: var(--azul); }
+
+@keyframes tremer { 25%, 75% { transform: translateX(-8px); } 50% { transform: translateX(8px); } }
+@media (prefers-reduced-motion: reduce) { .robo.bateu { animation: none; } }

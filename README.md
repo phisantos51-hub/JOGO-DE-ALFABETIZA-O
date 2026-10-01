@@ -13,6 +13,10 @@ O jogo é feito só com HTML, CSS e JavaScript, sem instalação:
 
 Funciona em computador, tablet e celular. A voz usa a síntese de fala do próprio navegador (português do Brasil). Sem internet, a fonte Andika é trocada por uma fonte do sistema e o restante continua funcionando.
 
+## Versão acessível (alunos cegos)
+
+A pasta [`acessivel/`](acessivel/) tem uma versão do jogo feita para alunos cegos ou com baixa visão. Ela funciona só pelo teclado, tem voz em português, sons que mostram a direção, opção de braille e funciona com o NVDA. Veja como usar em [`acessivel/README.md`](acessivel/README.md).
+
 ## Como jogar
 
 1. Escolha o ano e a fase.
@@ -64,6 +68,8 @@ js/dados.js         palavras, sílabas, figuras e frases de cada ano
 js/fases.js         geração das fases (sempre iguais) e verificação de que têm solução
 js/jogo.js          interface, execução do programa, voz, estrelas e progresso
 testes/fases.test.js  confere que todas as fases têm solução
+acessivel/          versão acessível (veja acessivel/README.md)
+testes/acessivel.test.js  testes da versão acessível
 ```
 
 ### Como adicionar palavras
