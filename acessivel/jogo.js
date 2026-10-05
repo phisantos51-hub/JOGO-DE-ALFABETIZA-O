@@ -42,6 +42,7 @@
     execucao: 0,
     ultimaTecla: '',
     ultimaFala: '',
+    confirmandoApagar: false,
   };
 
   // ---------- Fala ----------
@@ -137,6 +138,23 @@
         rotulo: `Sons: ${prefs.sons ? 'ligados' : 'desligados'}. Enter troca.`,
         acao: () => { prefs.sons = !prefs.sons; Som.ligado = prefs.sons; salvar(); if (prefs.sons) Som.certa(); },
       },
+      {
+        ajuste: true,
+        rotulo: estado.confirmandoApagar
+          ? 'Tem certeza? Aperte Enter de novo para apagar as fases feitas, ou Esc para cancelar.'
+          : 'Apagar o progresso: as fases feitas.',
+        acao: () => {
+          if (!estado.confirmandoApagar) {
+            estado.confirmandoApagar = true;
+            return;
+          }
+          estado.confirmandoApagar = false;
+          prefs.feitas = [];
+          salvar();
+          // Aviso sempre falado: com o leitor de tela, o rótulo novo não conta que apagou.
+          return 'Pronto, o progresso foi apagado. O jogo vai começar de novo na fase 1. As outras opções continuam iguais.';
+        },
+      },
       { rotulo: 'Ajuda: como jogar', acao: () => falar(textoAjuda()) },
     ];
   }
@@ -209,14 +227,23 @@
 
   function confirmarMenu() {
     const item = estado.menu[estado.foco];
-    item.acao();
+    const aviso = item.acao();
     // Opções que só trocam um ajuste continuam no menu, com o novo texto.
     // Com o leitor de tela, o novo foco já é lido; a voz do jogo só fala se estiver ligada.
     if (item.ajuste) {
       const foco = estado.foco;
       desenharMenu(itensMenu(), 'Menu', foco);
-      if (Voz.propria) falar(estado.menu[foco].rotulo);
+      if (aviso) falar(aviso);
+      else if (Voz.propria) falar(estado.menu[foco].rotulo);
     }
+  }
+
+  // Sair da pergunta "Tem certeza?" sem apagar nada.
+  function cancelarApagar() {
+    if (!estado.confirmandoApagar) return false;
+    estado.confirmandoApagar = false;
+    desenharMenu(itensMenu(), 'Menu', estado.foco);
+    return true;
   }
 
   // ---------- Fase ----------
@@ -540,6 +567,8 @@
     if (tecla === 'h' || tecla === 'H') return void falar(textoAjuda());
 
     if (estado.tela === 'menu' || estado.tela === 'fases') {
+      if (tecla === 'Escape' && cancelarApagar()) return void falar('Cancelado. Nada foi apagado.');
+      if (tecla === 'ArrowUp' || tecla === 'ArrowDown') cancelarApagar();
       if (tecla === 'ArrowDown') { estado.foco = (estado.foco + 1) % estado.menu.length; focarMenu(); }
       else if (tecla === 'ArrowUp') { estado.foco = (estado.foco - 1 + estado.menu.length) % estado.menu.length; focarMenu(); }
       else if (tecla === 'Enter') confirmarMenu();

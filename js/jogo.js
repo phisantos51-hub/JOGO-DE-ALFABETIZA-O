@@ -606,6 +606,13 @@
     if (!estado.som && 'speechSynthesis' in window) speechSynthesis.cancel();
     atualizarBotaoSom();
   });
+  $('#btn-zerar').addEventListener('click', () => {
+    if (!window.confirm('Apagar todas as estrelas e fases liberadas deste computador?')) return;
+    estado.progresso = {};
+    salvar(CHAVE_PROGRESSO, estado.progresso);
+    montarInicio();
+    falar('O progresso foi apagado.');
+  });
   $('#btn-como-jogar').addEventListener('click', () => {
     $('#modal-ajuda').hidden = false;
     $('#btn-fechar-ajuda').focus();

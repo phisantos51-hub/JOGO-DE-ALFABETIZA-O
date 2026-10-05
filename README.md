@@ -40,7 +40,7 @@ Atalhos de teclado: setas adicionam blocos, **R** adiciona REPETIR, **Enter** ex
 | **2º ano** | Sílabas simples (BO-NE-CA, MA-CA-CO…) e leitura de frase ao vencer | Sequência + **repetição** (bloco 🔁 REPETIR) | 6×6 |
 | **3º ano** | Sílabas complexas e dígrafos (CH, NH, LH, RR, SS, QU, GU, encontros consonantais) com "pegadinhas" parecidas (XU × CHU, NA × NHA, LA × LHA) | Repetição + **otimização**: limite de blocos | 7×7, mais obstáculos |
 
-Cada ano tem 10 fases, liberadas uma a uma. O progresso fica salvo no navegador.
+Cada ano tem 10 fases, liberadas uma a uma. O progresso fica salvo no navegador. Para começar do zero (por exemplo, quando outro aluno vai usar o computador), use o botão **🧽 Apagar o progresso** na tela inicial: o jogo pergunta antes de apagar.
 
 ## Habilidades trabalhadas
 
