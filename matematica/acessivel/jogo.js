@@ -44,6 +44,7 @@
     tentativas: 0,
     seq: 0, // muda a cada tecla: interrompe sons e dicas que estavam tocando
     ultimaFala: '',
+    confirmandoApagar: false,
   };
 
   function estrelasDe(ano, i) {
@@ -810,8 +811,33 @@
         rotulo: `Braille: ${prefs.braille ? 'ligado. Falo os pontos dos números' : 'desligado'}. Enter troca.`,
         acao: () => { prefs.braille = !prefs.braille; salvar(); },
       },
+      {
+        ajuste: true,
+        rotulo: estado.confirmandoApagar
+          ? 'Tem certeza? Aperte Enter de novo para apagar as estrelas dos três anos, ou Esc para cancelar.'
+          : 'Apagar o progresso: as estrelas dos três anos.',
+        acao: () => {
+          if (!estado.confirmandoApagar) {
+            estado.confirmandoApagar = true;
+            return;
+          }
+          estado.confirmandoApagar = false;
+          prefs.estrelas = {};
+          salvar();
+          // Aviso sempre falado: com o leitor de tela, o rótulo novo não conta que apagou.
+          return 'Pronto, o progresso foi apagado. O jogo vai começar de novo na fase 1. As outras opções continuam iguais.';
+        },
+      },
       { rotulo: 'Ajuda: como jogar', acao: () => falar(textoAjuda()) },
     ];
+  }
+
+  // Sair da pergunta "Tem certeza?" sem apagar nada.
+  function cancelarApagar() {
+    if (!estado.confirmandoApagar) return false;
+    estado.confirmandoApagar = false;
+    desenharMenu(itensMenu(), 'Menu', estado.foco);
+    return true;
   }
 
   function itensFases() {
@@ -883,12 +909,13 @@
 
   function confirmarMenu() {
     const item = estado.menu[estado.foco];
-    item.acao();
+    const aviso = item.acao();
     // Opções que só trocam um ajuste continuam no menu, com o novo texto.
     if (item.ajuste) {
       const foco = estado.foco;
       desenharMenu(itensMenu(), 'Menu', foco);
-      falarMenu(estado.menu[foco].rotulo);
+      if (aviso) falar(aviso);
+      else falarMenu(estado.menu[foco].rotulo);
     }
   }
 
@@ -994,6 +1021,8 @@
     if (t === 'h' || t === 'H') return void falar(textoAjuda());
 
     if (estado.tela === 'menu' || estado.tela === 'fases') {
+      if (t === 'Escape' && cancelarApagar()) return void falar('Cancelado. Nada foi apagado.');
+      if (t === 'ArrowUp' || t === 'ArrowDown') cancelarApagar();
       if (t === 'ArrowDown') { estado.foco = (estado.foco + 1) % estado.menu.length; focarMenu(); }
       else if (t === 'ArrowUp') { estado.foco = (estado.foco - 1 + estado.menu.length) % estado.menu.length; focarMenu(); }
       else if (t === 'Enter') confirmarMenu();

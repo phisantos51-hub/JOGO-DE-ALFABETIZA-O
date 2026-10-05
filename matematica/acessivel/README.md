@@ -51,6 +51,7 @@ O que o aluno já fez continua lá. Qualquer tecla interrompe a dica. Estrelas: 
 - **Voz do jogo: ligada ou desligada.** Se o aluno usa o NVDA, **desligue a voz do jogo**: aí só o NVDA fala, e as duas vozes não falam ao mesmo tempo. Os sons de contar continuam.
 - **Sons: ligados ou desligados.** Para contar ouvindo, deixe ligados.
 - **Braille: ligado ou desligado.** Ligado, o jogo diz os pontos dos números ("sinal de número, pontos 3, 4, 5 e 6; depois pontos 1 e 2") e mostra a cela na tela. É bom para o aluno conferir na reglete ou na máquina Perkins.
+- **Apagar o progresso.** Apaga as estrelas dos três anos, para começar de novo na fase 1. O jogo pergunta "Tem certeza?": é preciso apertar Enter mais uma vez para apagar. Esc ou as setas cancelam. As outras opções continuam como estavam.
 
 As opções e as estrelas ficam guardadas no navegador do computador.
 
