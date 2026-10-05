@@ -25,7 +25,6 @@ No menu: setas para cima e para baixo escolhem, Enter confirma.
 - **Braille: ligado ou desligado.** Ligado, o jogo diz os pontos de cada letra ("bê, pontos 1 e 2") e mostra a cela braille na tela.
 - **Voz do jogo: ligada ou desligada.** Se o aluno usa o NVDA, **desligue a voz do jogo**: aí só o NVDA fala, e as duas vozes não falam ao mesmo tempo.
 - **Sons: ligados ou desligados.**
-
 - **Apagar o progresso.** Apaga as fases já feitas, para começar de novo na fase 1. O jogo pergunta "Tem certeza?": é preciso apertar Enter mais uma vez para apagar. Esc ou as setas cancelam. As outras opções (peças, braille, voz e sons) continuam como estavam.
 
 As opções e as fases já feitas ficam guardadas no navegador do computador.
