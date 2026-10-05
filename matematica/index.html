@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Feira do Robô</title>
+  <meta name="description" content="Jogo de matemática para o 1º, 2º e 3º ano do Ensino Fundamental: contar, juntar, separar e pagar na feira.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Andika:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/feira.css">
+</head>
+<body>
+  <!-- Tela inicial: escolha do ano -->
+  <section id="tela-inicio" class="tela ativa">
+    <header class="topo-inicio">
+      <div class="toldo" aria-hidden="true"></div>
+      <div class="mascote" aria-hidden="true">🤖<span>🍎</span></div>
+      <h1>Feira do Robô</h1>
+      <p class="lema">Ajude o robô a contar, juntar, separar e pagar na barraca da feira!</p>
+    </header>
+    <div id="lista-anos" class="lista-anos"></div>
+    <div class="acoes-inicio">
+      <button id="btn-como-jogar" class="btn secundario">❓ Como jogar</button>
+      <button id="btn-som" class="btn secundario" aria-pressed="false">🔇 Som desligado</button>
+      <a class="btn secundario link" href="../index.html">🔤 Robô Letrinha</a>
+    </div>
+    <details class="professor">
+      <summary>Para o professor</summary>
+      <p>Cada fase é liberada quando a anterior é concluída. O progresso fica salvo neste computador.</p>
+      <div class="acoes-inicio">
+        <button id="btn-liberar" class="btn secundario">🔓 Liberar todas as fases</button>
+        <button id="btn-zerar" class="btn secundario">🧽 Apagar o progresso</button>
+      </div>
+    </details>
+  </section>
+
+  <!-- Tela de fases -->
+  <section id="tela-fases" class="tela">
+    <header class="barra">
+      <button class="btn secundario" data-ir="inicio">🏠 Menu</button>
+      <h2 id="titulo-fases"></h2>
+    </header>
+    <p id="descricao-fases" class="descricao-fases"></p>
+    <div id="lista-fases" class="lista-fases"></div>
+  </section>
+
+  <!-- Tela do jogo -->
+  <section id="tela-jogo" class="tela">
+    <header class="barra">
+      <button class="btn secundario" data-ir="fases">⬅ Fases</button>
+      <button class="btn secundario" data-ir="inicio">🏠 Menu</button>
+      <h2 id="titulo-jogo"></h2>
+    </header>
+
+    <div class="pedido">
+      <div class="cliente" id="cliente" aria-hidden="true"></div>
+      <div class="balao">
+        <p class="pedido-texto" id="pedido-texto"></p>
+        <div class="pedido-desenho" id="pedido-desenho" aria-hidden="true"></div>
+      </div>
+      <button class="btn icone" id="btn-ouvir" aria-label="Ouvir o pedido" hidden>🔊</button>
+      <div class="robo" id="robo" aria-hidden="true">🤖</div>
+    </div>
+
+    <div class="area" id="area"></div>
+
+    <footer class="rodape">
+      <div class="mensagem" id="mensagem" role="status" aria-live="polite"></div>
+      <div class="controles">
+        <button class="btn secundario" id="btn-limpar">🧹 Começar de novo</button>
+        <button class="btn principal" id="btn-pronto">✅ Pronto!</button>
+      </div>
+    </footer>
+  </section>
+
+  <!-- Janela de vitória -->
+  <div class="modal" id="modal-vitoria" hidden>
+    <div class="cartao">
+      <div class="confete" id="confete" aria-hidden="true"></div>
+      <div class="vitoria-robo" aria-hidden="true">🤖</div>
+      <h2>Muito bem!</h2>
+      <div class="vitoria-estrelas" id="vitoria-estrelas"></div>
+      <div class="vitoria-resumo" id="vitoria-resumo"></div>
+      <div class="controles">
+        <button class="btn secundario" id="btn-repetir-fase">↺ Jogar de novo</button>
+        <button class="btn principal" id="btn-proxima">Próxima fase ➜</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Janela de ajuda -->
+  <div class="modal" id="modal-ajuda" hidden>
+    <div class="cartao ajuda">
+      <h2>Como jogar</h2>
+      <ol>
+        <li>Leia (ou olhe o desenho) do <b>pedido do cliente</b>.</li>
+        <li><b>Arraste</b> as frutas, caixas, cartões e moedas com o mouse e <b>solte</b> no lugar certo. Os lugares para soltar ficam piscando.</li>
+        <li>Também dá para <b>clicar</b>: clique na fruta e ela vai para a sacola. Clique de novo nela para tirar.</li>
+        <li>Quando terminar, clique em <b>✅ Pronto!</b></li>
+        <li>Se ainda não estiver certo, o robô mostra uma <b>dica</b> e você continua de onde parou.</li>
+        <li>Acertou de primeira? ⭐⭐⭐!</li>
+      </ol>
+      <div class="controles">
+        <button class="btn principal" id="btn-fechar-ajuda">Entendi!</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/regras.js"></script>
+  <script src="js/fases.js"></script>
+  <script src="js/arrastar.js"></script>
+  <script src="js/jogo.js"></script>
+</body>
+</html>

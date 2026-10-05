@@ -17,6 +17,10 @@ Funciona em computador, tablet e celular. A voz usa a síntese de fala do própr
 
 A pasta [`acessivel/`](acessivel/) tem uma versão do jogo feita para alunos cegos ou com baixa visão. Ela funciona só pelo teclado, tem voz em português, sons que mostram a direção, opção de braille e funciona com o NVDA. Veja como usar em [`acessivel/README.md`](acessivel/README.md).
 
+## Feira do Robô (matemática)
+
+A pasta [`matematica/`](matematica/) tem um segundo jogo, de **matemática**, para o mesmo Ciclo de Alfabetização: o robô tem uma barraca de feira e a criança ajuda a contar, juntar, separar e pagar frutas e verduras. Tudo é feito com o mouse (arrastar e soltar ou clicar), sem depender de som. Veja [`matematica/README.md`](matematica/README.md).
+
 ## Como jogar
 
 1. Escolha o ano e a fase.
@@ -70,6 +74,8 @@ js/jogo.js          interface, execução do programa, voz, estrelas e progresso
 testes/fases.test.js  confere que todas as fases têm solução
 acessivel/          versão acessível (veja acessivel/README.md)
 testes/acessivel.test.js  testes da versão acessível
+matematica/         jogo de matemática Feira do Robô (veja matematica/README.md)
+testes/matematica.test.js  confere as fases da Feira do Robô
 ```
 
 ### Como adicionar palavras
