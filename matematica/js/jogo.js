@@ -1067,11 +1067,22 @@
     salvar(CHAVE_LIBERADO, estado.liberado);
     montarInicio();
   });
-  $('#btn-zerar').addEventListener('click', () => {
-    if (!window.confirm('Apagar todas as estrelas deste computador?')) return;
+  // Apagar o progresso: pergunta na própria página, sem janela do navegador
+  // (que pode estar bloqueada e fazer o botão parecer quebrado).
+  function mostrarConfirmacaoZerar(mostrar) {
+    $('#confirmar-zerar').hidden = !mostrar;
+    $('#btn-zerar').hidden = mostrar;
+    $('#aviso-zerar').textContent = '';
+    (mostrar ? $('#btn-zerar-nao') : $('#btn-zerar')).focus();
+  }
+  $('#btn-zerar').addEventListener('click', () => mostrarConfirmacaoZerar(true));
+  $('#btn-zerar-nao').addEventListener('click', () => mostrarConfirmacaoZerar(false));
+  $('#btn-zerar-sim').addEventListener('click', () => {
     estado.progresso = {};
     salvar(CHAVE_PROGRESSO, estado.progresso);
     montarInicio();
+    mostrarConfirmacaoZerar(false);
+    $('#aviso-zerar').textContent = '✅ Pronto! O progresso foi apagado.';
   });
 
   // Qualquer mudança na área do jogo apaga as marcas de conferência antigas.

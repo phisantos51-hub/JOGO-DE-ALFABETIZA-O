@@ -79,6 +79,16 @@ h1 { font-size: 44px; margin: 4px 0; color: var(--principal-escuro); letter-spac
 .link-acessivel { text-decoration: none; display: inline-flex; align-items: center; }
 .acoes-inicio { display: flex; gap: 12px; justify-content: center; margin-top: 24px; flex-wrap: wrap; }
 
+/* Área do professor: apagar o progresso com confirmação na própria página
+   (a janela de pergunta do navegador pode estar bloqueada). */
+.professor { margin: 26px auto 0; max-width: 640px; text-align: center; color: var(--suave); font-size: 17px; }
+.professor summary { cursor: pointer; font-weight: 700; }
+.professor .acoes-inicio { margin-top: 10px; }
+.confirmar { margin-top: 12px; padding: 12px; border: 3px solid var(--erro); border-radius: 14px; background: #fff0f0; color: var(--texto); }
+.confirmar p { margin: 0; }
+.btn.perigo { background: var(--erro); color: #fff; }
+.aviso-zerar { font-weight: 700; color: #136c40; min-height: 1.4em; }
+
 /* ---------- Barra de topo ---------- */
 .barra { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; flex-wrap: wrap; }
 .barra h2 { margin: 0; flex: 1; font-size: 26px; }
