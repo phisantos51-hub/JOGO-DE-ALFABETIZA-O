@@ -776,7 +776,11 @@
         await contar(pecas, rotulos);
       }
       let txt = `Na bandeja tem <b class="num">${Regras.dinheiro(res.total)}</b>. `;
-      if (troco) {
+      if (troco && fase.produtos.length > 1 && tentativa < 2) {
+        // Primeiro passo de quem comprou várias coisas: somar a compra (sem dar o total ainda).
+        const parcelas = fase.produtos.map((p) => `<b class="num">${Regras.dinheiro(p.preco)}</b>`).join(' + ');
+        txt += `Primeiro some a compra: ${parcelas}. Depois conte desse total até o valor pago <b class="num">${Regras.dinheiro(fase.pago)}</b>.`;
+      } else if (troco) {
         txt += `Para achar o troco, conte do preço <b class="num">${Regras.dinheiro(preco)}</b> até o valor pago <b class="num">${Regras.dinheiro(fase.pago)}</b>.`;
       } else {
         txt += `O preço é <b class="num">${Regras.dinheiro(preco)}</b>.`;

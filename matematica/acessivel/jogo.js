@@ -656,9 +656,14 @@
         if (!vivo(seq)) return;
       }
       let txt = `Na bandeja tem ${valorFalado(res.total)}. `;
-      txt += troco
-        ? `Para achar o troco, conte do preço, ${valorFalado(preco)}, até o que o cliente pagou, ${valorFalado(fase.pago)}.`
-        : `O preço é ${valorFalado(preco)}.`;
+      if (troco && fase.produtos.length > 1 && tentativa < 2) {
+        // Primeiro passo de quem comprou várias coisas: somar a compra (sem dar o total ainda).
+        txt += `Primeiro some a compra: ${fase.produtos.map((p) => valorFalado(p.preco)).join(', mais ')}. Depois conte desse total até o que o cliente pagou, ${valorFalado(fase.pago)}.`;
+      } else {
+        txt += troco
+          ? `Para achar o troco, conte do preço, ${valorFalado(preco)}, até o que o cliente pagou, ${valorFalado(fase.pago)}.`
+          : `O preço é ${valorFalado(preco)}.`;
+      }
       if (tentativa >= 2) {
         const dif = Math.abs(res.alvo - res.total);
         txt += res.total < res.alvo ? ` Falta ${valorFalado(dif)}.` : ` Passou ${valorFalado(dif)}: tire um pouco.`;

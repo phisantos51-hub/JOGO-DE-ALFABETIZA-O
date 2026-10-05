@@ -19,7 +19,8 @@ function formavel(valor, caixa) {
 let total = 0;
 for (const ano of Object.keys(ANOS)) {
   const cfg = ANOS[ano];
-  assert.strictEqual(cfg.fases.length, 10, `${ano}º ano deve ter 10 fases`);
+  const esperado = ano === '3' ? 20 : 10; // o 3º ano tem mais 10 fases de desafios do troco
+  assert.strictEqual(cfg.fases.length, esperado, `${ano}º ano deve ter ${esperado} fases`);
   cfg.fases.forEach((f, i) => {
     const nome = `${cfg.titulo} fase ${i + 1} (${f.tipo})`;
     assert(f.pedido && f.cliente && f.icone, `${nome}: falta pedido, cliente ou ícone`);

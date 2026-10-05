@@ -1,6 +1,6 @@
 # 🍎 Feira do Robô Acessível
 
-Versão da Feira do Robô para alunos cegos ou com baixa visão. Ela tem **as mesmas 30 fases** do jogo da turma (mesmos pedidos, mesmos números), então o aluno faz a mesma atividade que os colegas, ao mesmo tempo.
+Versão da Feira do Robô para alunos cegos ou com baixa visão. Ela tem **as mesmas 40 fases** do jogo da turma (mesmos pedidos, mesmos números), então o aluno faz a mesma atividade que os colegas, ao mesmo tempo.
 
 Tudo funciona **só pelo teclado**. O jogo fala sozinho, toca um som para cada fruta (para contar ouvindo) e também funciona com o leitor de tela NVDA. As teclas são as mesmas da versão acessível do Robô Letrinha.
 

@@ -149,7 +149,7 @@ h1 { font-size: 52px; margin: 4px 0; color: #c2410c; letter-spacing: 1px; }
 .cliente { font-size: 56px; line-height: 1; }
 .balao { flex: 1; min-width: 0; }
 .pedido-texto { margin: 0 0 4px; font-size: 30px; font-weight: 700; line-height: 1.2; }
-.pedido-texto .num, .mensagem .num { color: #c2410c; font-size: 1.15em; }
+.pedido-texto .num, .mensagem .num { color: #c2410c; font-size: 1.15em; white-space: nowrap; }
 .pedido-desenho { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; font-size: 26px; min-height: 40px; }
 .robo { font-size: 56px; line-height: 1; position: relative; }
 .robo.pensando::after { content: '💡'; position: absolute; top: -14px; right: -16px; font-size: 32px; animation: pulo 0.8s infinite; }

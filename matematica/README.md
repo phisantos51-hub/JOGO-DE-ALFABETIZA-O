@@ -19,7 +19,7 @@ A pasta [`acessivel/`](acessivel/) tem a mesma Feira, com as mesmas fases, para 
 
 ## Fases
 
-Cada ano tem 10 fases, liberadas uma a uma (o progresso fica salvo no navegador de cada computador). Em "Para o professor", na tela inicial, dá para **liberar todas as fases** ou **apagar o progresso**.
+Cada ano tem 10 fases (o 3º ano tem mais 10, as fases 11 a 20, de **desafios do troco**: o cliente compra 2 ou 3 produtos, a criança soma a compra e dá o troco, primeiro em reais inteiros e no fim com centavos), liberadas uma a uma (o progresso fica salvo no navegador de cada computador). Em "Para o professor", na tela inicial, dá para **liberar todas as fases** ou **apagar o progresso**.
 
 | Ano | O que a criança faz |
 | --- | --- |

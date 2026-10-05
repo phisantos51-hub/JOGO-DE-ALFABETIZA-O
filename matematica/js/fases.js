@@ -51,7 +51,7 @@ const ANOS = {
   3: {
     titulo: '3º ano',
     subtitulo: 'Centenas e dinheiro',
-    descricao: 'Centena, dezena e unidade, troco, grupos iguais, cédulas e moedas.',
+    descricao: 'Centena, dezena e unidade, troco, grupos iguais, cédulas e moedas. Fases 11 a 20: desafios do troco.',
     cor: '#1f9d55',
     fases: [
       { tipo: 'sacola', icone: '🧺', cliente: '👨', pedido: 'Quero 134 laranjas.', fruta: '🍊', alvo: 134, unidades: ['engradado', 'caixa', 'solta'] },
@@ -64,6 +64,18 @@ const ANOS = {
       { tipo: 'dinheiro', icone: '🥬', cliente: '👩‍🦱', pedido: 'A alface custa R$ 3,50. O cliente pagou com R$ 5,00. Dê o troco.', produtos: [{ emoji: '🥬', nome: 'alface', preco: 350 }], pago: 500, caixa: [10, 25, 50, 100] },
       { tipo: 'valor', icone: '🔢', cliente: '👨', pedido: 'Quantas laranjas tem na barraca? Escreva o número.', fruta: '🍊', c: 3, d: 1, u: 8 },
       { tipo: 'dinheiro', icone: '🛒', cliente: '👧', pedido: 'O cliente comprou melão e uvas e pagou com R$ 50,00. Dê o troco.', produtos: [{ emoji: '🍈', nome: 'melão', preco: 1200 }, { emoji: '🍇', nome: 'uvas', preco: 600 }], pago: 5000, caixa: [100, 200, 500, 1000, 2000] },
+      // Desafios do troco: some as compras e depois descubra o troco.
+      // Começa com reais inteiros, passa para três produtos e termina com centavos.
+      { tipo: 'dinheiro', icone: '🍌', cliente: '👵', pedido: 'A cliente comprou bananas e laranjas e pagou com R$ 10,00. Dê o troco.', produtos: [{ emoji: '🍌', nome: 'bananas', preco: 400 }, { emoji: '🍊', nome: 'laranjas', preco: 300 }], pago: 1000, caixa: [100, 200, 500] },
+      { tipo: 'dinheiro', icone: '🍍', cliente: '👨', pedido: 'O cliente comprou abacaxi e morangos e pagou com R$ 20,00. Dê o troco.', produtos: [{ emoji: '🍍', nome: 'abacaxi', preco: 800 }, { emoji: '🍓', nome: 'morangos', preco: 500 }], pago: 2000, caixa: [100, 200, 500, 1000] },
+      { tipo: 'dinheiro', icone: '🍉', cliente: '👩', pedido: 'A cliente comprou melancia e limões e pagou com R$ 20,00. Dê o troco.', produtos: [{ emoji: '🍉', nome: 'melancia', preco: 1500 }, { emoji: '🍋', nome: 'limões', preco: 400 }], pago: 2000, caixa: [100, 200, 500, 1000] },
+      { tipo: 'dinheiro', icone: '🥚', cliente: '🧑', pedido: 'O cliente comprou ovos e melão e pagou com R$ 50,00. Dê o troco.', produtos: [{ emoji: '🥚', nome: 'ovos', preco: 1200 }, { emoji: '🍈', nome: 'melão', preco: 900 }], pago: 5000, caixa: [100, 200, 500, 1000, 2000] },
+      { tipo: 'dinheiro', icone: '🧺', cliente: '👴', pedido: 'O cliente comprou maçãs, peras e bananas e pagou com R$ 50,00. Dê o troco.', produtos: [{ emoji: '🍎', nome: 'maçãs', preco: 600 }, { emoji: '🍐', nome: 'peras', preco: 700 }, { emoji: '🍌', nome: 'bananas', preco: 500 }], pago: 5000, caixa: [100, 200, 500, 1000, 2000] },
+      { tipo: 'dinheiro', icone: '🛍️', cliente: '👩‍🦱', pedido: 'A cliente comprou melancia, abacaxi e cenouras e pagou com R$ 100,00. Dê o troco.', produtos: [{ emoji: '🍉', nome: 'melancia', preco: 2300 }, { emoji: '🍍', nome: 'abacaxi', preco: 900 }, { emoji: '🥕', nome: 'cenouras', preco: 600 }], pago: 10000, caixa: [100, 200, 500, 1000, 2000, 5000] },
+      { tipo: 'dinheiro', icone: '🥕', cliente: '👦', pedido: 'O cliente comprou cenouras e tomates e pagou com R$ 10,00. Dê o troco.', produtos: [{ emoji: '🥕', nome: 'cenouras', preco: 350 }, { emoji: '🍅', nome: 'tomates', preco: 450 }], pago: 1000, caixa: [25, 50, 100, 200] },
+      { tipo: 'dinheiro', icone: '🥬', cliente: '👵', pedido: 'A cliente comprou alface e pepinos e pagou com R$ 10,00. Dê o troco.', produtos: [{ emoji: '🥬', nome: 'alface', preco: 250 }, { emoji: '🥒', nome: 'pepinos', preco: 325 }], pago: 1000, caixa: [25, 50, 100, 200] },
+      { tipo: 'dinheiro', icone: '🍇', cliente: '👧', pedido: 'A cliente comprou uvas, morangos e laranjas e pagou com R$ 20,00. Dê o troco.', produtos: [{ emoji: '🍇', nome: 'uvas', preco: 725 }, { emoji: '🍓', nome: 'morangos', preco: 650 }, { emoji: '🍊', nome: 'laranjas', preco: 400 }], pago: 2000, caixa: [25, 50, 100, 200] },
+      { tipo: 'dinheiro', icone: '🏆', cliente: '👨', pedido: 'O cliente comprou melão, ovos e maçãs e pagou com R$ 50,00. Dê o troco.', produtos: [{ emoji: '🍈', nome: 'melão', preco: 1350 }, { emoji: '🥚', nome: 'ovos', preco: 1175 }, { emoji: '🍎', nome: 'maçãs', preco: 850 }], pago: 5000, caixa: [25, 50, 100, 200, 500, 1000] },
     ],
   },
 };
