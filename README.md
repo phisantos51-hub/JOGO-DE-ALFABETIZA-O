@@ -19,7 +19,7 @@ A pasta [`acessivel/`](acessivel/) tem uma versão do jogo feita para alunos ceg
 
 ## Feira do Robô (matemática)
 
-A pasta [`matematica/`](matematica/) tem um segundo jogo, de **matemática**, para o mesmo Ciclo de Alfabetização: o robô tem uma barraca de feira e a criança ajuda a contar, juntar, separar e pagar frutas e verduras. Tudo é feito com o mouse (arrastar e soltar ou clicar), sem depender de som. Veja [`matematica/README.md`](matematica/README.md).
+A pasta [`matematica/`](matematica/) tem um segundo jogo, de **matemática**, para o mesmo Ciclo de Alfabetização: o robô tem uma barraca de feira e a criança ajuda a contar, juntar, separar e pagar frutas e verduras. Tudo é feito com o mouse (arrastar e soltar ou clicar), sem depender de som. Veja [`matematica/README.md`](matematica/README.md). Ela também tem uma versão acessível para alunos cegos, em [`matematica/acessivel/`](matematica/acessivel/).
 
 ## Como jogar
 
@@ -76,6 +76,7 @@ acessivel/          versão acessível (veja acessivel/README.md)
 testes/acessivel.test.js  testes da versão acessível
 matematica/         jogo de matemática Feira do Robô (veja matematica/README.md)
 testes/matematica.test.js  confere as fases da Feira do Robô
+testes/matematica-acessivel.test.js  confere as falas da Feira acessível
 ```
 
 ### Como adicionar palavras

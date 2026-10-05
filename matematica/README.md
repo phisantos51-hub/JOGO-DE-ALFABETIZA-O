@@ -13,6 +13,10 @@ O robô tem uma barraca de feira. Em cada fase chega um cliente com um pedido ("
 - **Sem instalação e sem internet:** depois de aberto, o jogo funciona offline. Sem internet, a fonte Andika é trocada por uma fonte parecida do computador.
 - **1º ano em letra de imprensa maiúscula.**
 
+## Versão acessível (alunos cegos)
+
+A pasta [`acessivel/`](acessivel/) tem a mesma Feira, com as mesmas fases, para alunos cegos ou com baixa visão. Ela funciona só pelo teclado, com voz, sons para contar ouvindo e braille, e funciona com o NVDA. Veja [`acessivel/README.md`](acessivel/README.md).
+
 ## Fases
 
 Cada ano tem 10 fases, liberadas uma a uma (o progresso fica salvo no navegador de cada computador). Em "Para o professor", na tela inicial, dá para **liberar todas as fases** ou **apagar o progresso**.
@@ -46,4 +50,5 @@ js/fases.js       pedidos de cada fase, por ano
 js/regras.js      contas e conferência das respostas
 js/arrastar.js    arrastar e soltar com o mouse (e clique)
 js/jogo.js        telas, peças, dicas, estrelas e progresso
+acessivel/        versão acessível (teclado, voz e sons)
 ```

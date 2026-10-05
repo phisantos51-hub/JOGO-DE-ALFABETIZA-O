@@ -1,0 +1,14 @@
+/* Complementa o alto contraste do Robô Letrinha acessível (../../acessivel/estilo.css). */
+.pedido-grande { font-size: 34px; font-weight: 700; margin: 0 0 16px; }
+.quadro { font-size: 30px; line-height: 1.5; }
+.quadro p { margin: 0 0 8px; }
+.quadro .linha-emoji { font-size: 34px; letter-spacing: 4px; word-break: break-all; }
+.quadro .foco {
+  display: inline-block; padding: 2px 12px; border-radius: 10px;
+  background: var(--destaque); color: #000; font-weight: 700;
+}
+.quadro .escolha { color: var(--destaque); font-weight: 700; }
+.quadro .ok { color: var(--verde); }
+.quadro .braille { font-size: 48px; letter-spacing: 6px; color: var(--azul); }
+.area { grid-template-columns: minmax(0, 1.4fr) minmax(280px, 0.8fr); }
+#tela-jogo.venceu .painel:first-child { border-color: var(--verde); }
