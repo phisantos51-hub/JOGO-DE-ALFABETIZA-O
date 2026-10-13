@@ -19,7 +19,7 @@ A pasta [`acessivel/`](acessivel/) tem a mesma Feira, com as mesmas fases, para 
 
 ## Fases
 
-Cada ano tem 10 fases (o 3º ano tem mais 10, as fases 11 a 20, de **desafios do troco**: o cliente compra 2 ou 3 produtos, a criança soma a compra e dá o troco, primeiro em reais inteiros e no fim com centavos), liberadas uma a uma (o progresso fica salvo no navegador de cada computador). Em "Para o professor", na tela inicial, dá para **liberar todas as fases** ou **apagar o progresso**.
+O 1º ano tem 20 fases, o 2º ano tem 10 e o 3º ano tem 30. No 1º ano, as fases 11 a 20 trazem mais contagem, comparação, juntar e **tirar** até 10 e sequência até 20. No 3º ano, as fases 11 a 20 são **desafios do troco** (o cliente compra 2 ou 3 produtos, a criança soma a compra e dá o troco, primeiro em reais inteiros e no fim com centavos) e as fases 21 a 30 são uma **revisão do ano** com números maiores. As fases são liberadas uma a uma (o progresso fica salvo no navegador de cada computador). Em "Para o professor", na tela inicial, dá para **liberar todas as fases** ou **apagar o progresso**.
 
 | Ano | O que a criança faz |
 | --- | --- |

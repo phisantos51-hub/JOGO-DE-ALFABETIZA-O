@@ -452,7 +452,9 @@
     }
     function resumo() {
       const partes = fase.grupos.map((g) => g.n);
-      return `<span class="conta">${partes.length > 1 ? partes.join(' + ') + ' = ' : ''}${total} ${fase.grupos[fase.grupos.length - 1].fruta}</span>`;
+      // Frutas diferentes (maçãs e peras): o total é de frutas, sem desenho de uma só.
+      const mesmaFruta = fase.grupos.every((g) => g.fruta === fase.grupos[0].fruta);
+      return `<span class="conta">${partes.length > 1 ? partes.join(' + ') + ' = ' : ''}${total}${mesmaFruta ? ' ' + fase.grupos[0].fruta : ''}</span>`;
     }
     return { render, resposta: () => fichas.slots[0], dica, resumo, desenho };
   }
@@ -829,6 +831,7 @@
       mesa.appendChild(topo);
 
       const linha = h('div', 'linha-cestas');
+      linha.style.setProperty('--cestas', fase.cestas);
       cestas.forEach((n, c) => {
         let classe = 'cesta-grupo cesta-mult';
         if (conferir) classe += conferir.includes(c) ? ' conferir' : ' certo';

@@ -14,7 +14,7 @@ const ANOS = {
   1: {
     titulo: '1º ano',
     subtitulo: 'Contar e juntar',
-    descricao: 'Contagem até 30, número e quantidade, mais e menos, juntar até 10.',
+    descricao: 'Contagem até 30, número e quantidade, mais e menos, juntar e tirar até 10.',
     cor: '#ff7a1a',
     caixaAlta: true,
     fases: [
@@ -28,6 +28,17 @@ const ANOS = {
       { tipo: 'quantos', icone: '🥒', cliente: '👨', pedido: 'Junte os pepinos. Quantos ao todo?', grupos: [{ fruta: '🥒', n: 6 }, { fruta: '🥒', n: 4 }], opcoes: [9, 10, 11] },
       { tipo: 'quantos', icone: '🍅', cliente: '👵', pedido: 'Quantos tomates tem na caixa?', grupos: [{ fruta: '🍅', n: 18 }], opcoes: [16, 18, 20] },
       { tipo: 'sacola', icone: '🥚', cliente: '👩', pedido: 'Quero 30 ovos.', fruta: '🥚', alvo: 30, unidades: ['solta'] },
+      // Fases 11 a 20: mais contagem, comparação, juntar e separar (tirar) até 10, sequência até 20.
+      { tipo: 'sacola', icone: '🍌', cliente: '👦', pedido: 'Quero 9 bananas.', fruta: '🍌', alvo: 9, unidades: ['solta'] },
+      { tipo: 'quantos', icone: '🍓', cliente: '👵', pedido: 'Quantos morangos tem na caixa?', grupos: [{ fruta: '🍓', n: 13 }], opcoes: [12, 13, 15] },
+      { tipo: 'comparar', icone: '🍐', cliente: '👨', pedido: 'Qual cesta tem MAIS peras?', pergunta: 'mais', a: { fruta: '🍐', n: 7 }, b: { fruta: '🍐', n: 4 } },
+      { tipo: 'quantos', icone: '🍋', cliente: '👧', pedido: 'Junte as laranjas e os limões. Quantas frutas ao todo?', grupos: [{ fruta: '🍊', n: 2 }, { fruta: '🍋', n: 5 }], opcoes: [6, 7, 9] },
+      { tipo: 'sacola', icone: '➖', cliente: '👴', pedido: 'A sacola tem 8 maçãs. Tire 3.', conta: '8 − 3', fruta: '🍎', inicial: 8, alvo: 5, unidades: ['solta'] },
+      { tipo: 'sequencia', icone: '🔢', cliente: '🧑', pedido: 'Complete a fila de caixotes.', itens: [11, 12, 13, 14, 15, 16], lacunas: [2, 4], extras: [10, 17] },
+      { tipo: 'comparar', icone: '🥕', cliente: '👩‍🦱', pedido: 'Qual cesta tem MENOS cenouras?', pergunta: 'menos', a: { fruta: '🥕', n: 10 }, b: { fruta: '🥕', n: 6 } },
+      { tipo: 'quantos', icone: '🥚', cliente: '👩', pedido: 'Quantos ovos tem na caixa?', grupos: [{ fruta: '🥚', n: 24 }], opcoes: [22, 24, 25] },
+      { tipo: 'sacola', icone: '🍅', cliente: '👦', pedido: 'A sacola tem 10 tomates. Tire 4.', conta: '10 − 4', fruta: '🍅', inicial: 10, alvo: 6, unidades: ['solta'] },
+      { tipo: 'sacola', icone: '🏆', cliente: '👵', pedido: 'Quero 27 morangos.', fruta: '🍓', alvo: 27, unidades: ['solta'] },
     ],
   },
   2: {
@@ -51,7 +62,7 @@ const ANOS = {
   3: {
     titulo: '3º ano',
     subtitulo: 'Centenas e dinheiro',
-    descricao: 'Centena, dezena e unidade, troco, grupos iguais, cédulas e moedas. Fases 11 a 20: desafios do troco.',
+    descricao: 'Centena, dezena e unidade, troco, grupos iguais, cédulas e moedas. Fases 11 a 20: desafios do troco. Fases 21 a 30: revisão com números maiores.',
     cor: '#1f9d55',
     fases: [
       { tipo: 'sacola', icone: '🧺', cliente: '👨', pedido: 'Quero 134 laranjas.', fruta: '🍊', alvo: 134, unidades: ['engradado', 'caixa', 'solta'] },
@@ -76,6 +87,17 @@ const ANOS = {
       { tipo: 'dinheiro', icone: '🥬', cliente: '👵', pedido: 'A cliente comprou alface e pepinos e pagou com R$ 10,00. Dê o troco.', produtos: [{ emoji: '🥬', nome: 'alface', preco: 250 }, { emoji: '🥒', nome: 'pepinos', preco: 325 }], pago: 1000, caixa: [25, 50, 100, 200] },
       { tipo: 'dinheiro', icone: '🍇', cliente: '👧', pedido: 'A cliente comprou uvas, morangos e laranjas e pagou com R$ 20,00. Dê o troco.', produtos: [{ emoji: '🍇', nome: 'uvas', preco: 725 }, { emoji: '🍓', nome: 'morangos', preco: 650 }, { emoji: '🍊', nome: 'laranjas', preco: 400 }], pago: 2000, caixa: [25, 50, 100, 200] },
       { tipo: 'dinheiro', icone: '🏆', cliente: '👨', pedido: 'O cliente comprou melão, ovos e maçãs e pagou com R$ 50,00. Dê o troco.', produtos: [{ emoji: '🍈', nome: 'melão', preco: 1350 }, { emoji: '🥚', nome: 'ovos', preco: 1175 }, { emoji: '🍎', nome: 'maçãs', preco: 850 }], pago: 5000, caixa: [25, 50, 100, 200, 500, 1000] },
+      // Fases 21 a 30: revisão do ano todo, com números maiores.
+      { tipo: 'sacola', icone: '🍎', cliente: '👩', pedido: 'Quero 215 maçãs.', fruta: '🍎', alvo: 215, unidades: ['engradado', 'caixa', 'solta'] },
+      { tipo: 'valor', icone: '🍋', cliente: '👦', pedido: 'Quantos limões tem na barraca? Escreva o número.', fruta: '🍋', c: 4, d: 0, u: 3 },
+      { tipo: 'grupos', icone: '🍊', cliente: '👵', pedido: 'Monte 5 cestas com 4 laranjas em cada uma.', fruta: '🍊', cestas: 5, porCesta: 4, opcoes: [9, 20, 24] },
+      { tipo: 'sacola', icone: '➖', cliente: '🧑', pedido: 'A sacola tem 245 ovos. Tire 123.', conta: '245 − 123', fruta: '🥚', inicial: 245, alvo: 122, unidades: ['engradado', 'caixa', 'solta'] },
+      { tipo: 'dinheiro', icone: '🍍', cliente: '👧', pedido: 'Pague o abacaxi e as uvas.', produtos: [{ emoji: '🍍', nome: 'abacaxi', preco: 800 }, { emoji: '🍇', nome: 'uvas', preco: 550 }], caixa: [50, 100, 200, 500, 1000] },
+      { tipo: 'sequencia', icone: '💯', cliente: '👨', pedido: 'Os caixotes vão de 100 em 100. Complete!', itens: [100, 200, 300, 400, 500, 600], lacunas: [2, 4], extras: [350, 700] },
+      { tipo: 'grupos', icone: '🥕', cliente: '👩‍🦱', pedido: 'Monte 6 cestas com 3 cenouras em cada uma.', fruta: '🥕', cestas: 6, porCesta: 3, opcoes: [9, 18, 21] },
+      { tipo: 'sacola', icone: '➕', cliente: '👴', pedido: 'A sacola tem 136 limões. Coloque mais 47.', conta: '136 + 47', fruta: '🍋', inicial: 136, alvo: 183, unidades: ['engradado', 'caixa', 'solta'] },
+      { tipo: 'valor', icone: '🥕', cliente: '👧', pedido: 'Quantas cenouras tem na barraca? Escreva o número.', fruta: '🥕', c: 5, d: 6, u: 0 },
+      { tipo: 'dinheiro', icone: '🏅', cliente: '👦', pedido: 'O cliente comprou melancia, abacaxi e uvas e pagou com R$ 100,00. Dê o troco.', produtos: [{ emoji: '🍉', nome: 'melancia', preco: 1850 }, { emoji: '🍍', nome: 'abacaxi', preco: 975 }, { emoji: '🍇', nome: 'uvas', preco: 625 }], pago: 10000, caixa: [50, 100, 200, 500, 1000, 2000, 5000] },
     ],
   },
 };

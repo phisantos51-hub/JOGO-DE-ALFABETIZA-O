@@ -369,7 +369,7 @@ body.arrastando, body.arrastando * { cursor: grabbing !important; }
 
 /* ---------- Par e ímpar ---------- */
 .caixas-par { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
-.caixa-par { min-height: 170px; cursor: pointer; }
+.caixa-par { min-height: 150px; cursor: pointer; }
 .caixa-par .dentro { display: flex; flex-wrap: wrap; gap: 12px; min-height: 96px; }
 .caixa-par { background: #eef6ff; border-color: #7aa7e8; }
 .caixa-impar { background: #fff1e6; border-color: #f0a46b; }
@@ -412,10 +412,10 @@ body.arrastando, body.arrastando * { cursor: grabbing !important; }
 .banca-grupos { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
 .banca-grupos .rotulo { margin: 0; }
 .banca-grupos .ajudinha { flex: 1; min-width: 240px; }
-.linha-cestas { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 14px; }
-.cesta-mult { flex-direction: column; align-items: stretch; max-width: none; min-height: 170px; cursor: pointer; justify-content: flex-start; }
+.linha-cestas { display: grid; grid-template-columns: repeat(var(--cestas, 4), minmax(0, 1fr)); gap: 12px; }
+.cesta-mult { flex-direction: column; align-items: stretch; max-width: none; min-height: 150px; cursor: pointer; justify-content: flex-start; }
 .cesta-mult .dentro { display: flex; flex-wrap: wrap; gap: 4px; justify-content: center; }
-.cesta-mult .fruta { width: 56px; height: 56px; font-size: 40px; }
+.cesta-mult .fruta { width: 50px; height: 50px; font-size: 36px; }
 .linha-resposta { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
 .linha-resposta .pergunta { font-size: 24px; font-weight: 700; }
 .linha-resposta .banco { flex: 1; }
@@ -479,6 +479,7 @@ body.arrastando, body.arrastando * { cursor: grabbing !important; }
 
 /* Telas menores */
 @media (max-width: 900px) {
+  .linha-cestas { grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); }
   .mesa-sacola, .mesa-dinheiro { grid-template-columns: 1fr; }
   .grade-comparar { grid-template-columns: 1fr; }
   .estoque-valor { grid-template-columns: 1fr; }
