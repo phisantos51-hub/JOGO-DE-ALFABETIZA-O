@@ -101,26 +101,74 @@
 
   // ---------- Som opcional (desligado por padrão) ----------
   let audio = null;
-  function som(tipo) {
-    if (!estado.som) return;
+  // Efeitos sonoros feitos na hora (sem arquivos de áudio, funcionam sem internet).
+  // Só tocam com o som ligado. Erro nunca tem som "de bronca": é um "hmm?" leve.
+  function tom(c, saida, { freq, freqFinal, dur = 0.12, tipo = 'sine', vol = 0.3, atraso = 0 }) {
+    const t = c.currentTime + atraso;
+    const o = c.createOscillator();
+    const g = c.createGain();
+    o.type = tipo;
+    o.frequency.setValueAtTime(freq, t);
+    if (freqFinal) o.frequency.exponentialRampToValueAtTime(freqFinal, t + dur);
+    g.gain.setValueAtTime(0.0001, t);
+    g.gain.exponentialRampToValueAtTime(vol, t + 0.01);
+    g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+    o.connect(g).connect(saida);
+    o.start(t);
+    o.stop(t + dur + 0.05);
+  }
+  function papel(c, saida) {
+    const dur = 0.16;
+    const buf = c.createBuffer(1, Math.floor(c.sampleRate * dur), c.sampleRate);
+    const d = buf.getChannelData(0);
+    for (let i = 0; i < d.length; i++) d[i] = (Math.random() * 2 - 1) * (1 - i / d.length);
+    const fonte = c.createBufferSource();
+    fonte.buffer = buf;
+    const filtro = c.createBiquadFilter();
+    filtro.type = 'bandpass';
+    filtro.frequency.value = 3000;
+    const g = c.createGain();
+    g.gain.value = 0.5;
+    fonte.connect(filtro).connect(g).connect(saida);
+    fonte.start();
+  }
+  const EFEITOS = {
+    // Colocar uma peça: "plop" subindo.
+    soltar: (t) => t({ freq: 320, freqFinal: 680, dur: 0.1, vol: 0.35 }),
+    // Tirar uma peça: "plop" descendo.
+    tirar: (t) => t({ freq: 620, freqFinal: 300, dur: 0.11, vol: 0.3 }),
+    // Acertou: fanfarra alegre (dó, mi, sol, dó) com brilho no fim.
+    acerto: (t) => {
+      [523, 659, 784].forEach((f, i) => t({ freq: f, dur: 0.14, tipo: 'triangle', vol: 0.32, atraso: i * 0.11 }));
+      [1047, 1319, 1568].forEach((f) => t({ freq: f, dur: 0.6, tipo: 'triangle', vol: 0.16, atraso: 0.34 }));
+      t({ freq: 2093, dur: 0.25, vol: 0.08, atraso: 0.5 });
+    },
+    // Cada estrela que aparece na tela de vitória.
+    estrela: (t, n) => t({ freq: 1175 + n * 220, freqFinal: 1760 + n * 220, dur: 0.22, vol: 0.18 }),
+    // Ainda não está certo: "hmm?" leve e brincalhão, antes da dica.
+    dica: (t) => {
+      t({ freq: 392, freqFinal: 330, dur: 0.2, tipo: 'triangle', vol: 0.3 });
+      t({ freq: 330, freqFinal: 440, dur: 0.28, tipo: 'triangle', vol: 0.3, atraso: 0.22 });
+    },
+    // Contagem da dica: um toque por item, cada um um pouco mais agudo.
+    conta: (t, n) => t({ freq: Math.min(500 + n * 25, 1300), dur: 0.07, tipo: 'triangle', vol: 0.22 }),
+    // 10 soltas viraram 1 caixa (ou 10 caixas, 1 engradado).
+    empacotar: (t) => [523, 659, 784, 1047].forEach((f, i) => t({ freq: f, dur: 0.09, vol: 0.22, atraso: i * 0.06 })),
+    // Abriu uma caixa.
+    abrir: (t) => [1047, 784, 659, 523].forEach((f, i) => t({ freq: f, dur: 0.09, vol: 0.22, atraso: i * 0.06 })),
+    moeda: (t) => { t({ freq: 1900, dur: 0.12, vol: 0.18 }); t({ freq: 2600, dur: 0.22, vol: 0.13, atraso: 0.06 }); },
+    nota: (t, n, c, saida) => papel(c, saida),
+  };
+  function som(tipo, n = 0) {
+    if (!estado.som || !EFEITOS[tipo]) return;
     try {
       audio = audio || new (window.AudioContext || window.webkitAudioContext)();
-      const notas = { soltar: [520], acerto: [523, 659, 784, 1047], dica: [440, 494] }[tipo] || [500];
-      notas.forEach((freq, i) => {
-        const o = audio.createOscillator();
-        const g = audio.createGain();
-        o.frequency.value = freq;
-        o.type = 'sine';
-        const t = audio.currentTime + i * 0.12;
-        g.gain.setValueAtTime(0.0001, t);
-        g.gain.exponentialRampToValueAtTime(0.15, t + 0.02);
-        g.gain.exponentialRampToValueAtTime(0.0001, t + 0.18);
-        o.connect(g).connect(audio.destination);
-        o.start(t);
-        o.stop(t + 0.2);
-      });
-    } catch (e) { /* sem áudio */ }
+      if (audio.state === 'suspended') audio.resume();
+      const saida = audio.destination;
+      EFEITOS[tipo]((op) => tom(audio, saida, op), n, audio, saida);
+    } catch (e) { /* sem áudio: o jogo continua só com o visual */ }
   }
+
   function falar(texto) {
     if (!estado.som || !('speechSynthesis' in window)) return;
     speechSynthesis.cancel();
@@ -133,6 +181,11 @@
     const b = $('#btn-som');
     b.textContent = estado.som ? '🔊 Som ligado' : '🔇 Som desligado';
     b.setAttribute('aria-pressed', String(estado.som));
+    const bj = $('#btn-som-jogo');
+    bj.textContent = estado.som ? '🔊 Som' : '🔇 Som';
+    bj.setAttribute('aria-pressed', String(estado.som));
+    bj.setAttribute('aria-label', estado.som ? 'Som ligado. Clique para desligar.' : 'Som desligado. Clique para ligar.');
+    bj.title = bj.getAttribute('aria-label');
     $('#btn-ouvir').hidden = !estado.som;
   }
 
@@ -184,6 +237,7 @@
       const el = lista[i];
       el.classList.add('contando');
       el.appendChild(h('span', 'selo', String(rotulos ? rotulos[i] : i + 1)));
+      som('conta', i);
       await esperar(passo);
       el.classList.remove('contando');
       el.classList.add('contado');
@@ -234,7 +288,7 @@
     const slot = h('div', 'slot' + (classe ? ' ' + classe : ''));
     if (f.slots[i] !== null) {
       const c = h('div', 'ficha', f.formato(f.slots[i]));
-      itemArrastavel(c, { chave: `${id}-slot-${i}`, tipo: 'ficha', grupo: id, valor: f.slots[i], slot: i }, () => { f.slots[i] = null; atualizar(); });
+      itemArrastavel(c, { chave: `${id}-slot-${i}`, tipo: 'ficha', grupo: id, valor: f.slots[i], slot: i }, () => { f.slots[i] = null; som('tirar'); atualizar(); });
       slot.appendChild(c);
       slot.classList.add('cheio');
     } else {
@@ -272,6 +326,7 @@
       const trocas = Regras.empacotar(s, fase.unidades);
       trocou = trocas.length > 0;
       if (trocou) {
+        som('empacotar');
         ultimo = trocas[trocas.length - 1];
         mensagem(ultimo === 'caixa' ? '📦 10 soltas viraram 1 caixa!' : '🧺 10 caixas viraram 1 engradado!', 'info');
       }
@@ -288,6 +343,7 @@
       if (u === 'caixa' && s.caixa > 0) { s.caixa--; s.solta += 10; ultimo = 'solta'; }
       else if (u === 'engradado' && s.engradado > 0) { s.engradado--; s.caixa += 10; ultimo = 'caixa'; }
       trocou = true;
+      som('abrir');
       mensagem(u === 'caixa' ? '✂️ A caixa abriu: agora são 10 soltas.' : '✂️ O engradado abriu: agora são 10 caixas.', 'info');
       atualizar();
     }
@@ -325,7 +381,7 @@
           const p = desenharUnidade(u, fase.fruta);
           p.classList.add('na-sacola');
           if (u === ultimo && i === s[u] - 1) p.classList.add(trocou ? 'empacotou' : 'novo');
-          itemArrastavel(p, { chave: `sac-${u}-${i}`, tipo: 'naSacola', unidade: u }, () => remover(u));
+          itemArrastavel(p, { chave: `sac-${u}-${i}`, tipo: 'naSacola', unidade: u }, () => { remover(u); som('tirar'); });
           fila.appendChild(p);
         }
         dentro.appendChild(fila);
@@ -336,7 +392,7 @@
           const p = desenharUnidade('solta', fase.fruta);
           p.classList.add('na-sacola');
           if (ultimo === 'solta' && i === s.solta - 1) p.classList.add('novo');
-          itemArrastavel(p, { chave: `sac-solta-${i}`, tipo: 'naSacola', unidade: 'solta' }, () => remover('solta'));
+          itemArrastavel(p, { chave: `sac-solta-${i}`, tipo: 'naSacola', unidade: 'solta' }, () => { remover('solta'); som('tirar'); });
           grade.appendChild(p);
         }
         dentro.appendChild(grade);
@@ -744,7 +800,7 @@
       const gaveta = h('div', 'gaveta');
       fase.caixa.slice().sort((x, y) => y - x).forEach((v) => {
         const p = desenharDinheiro(v);
-        itemArrastavel(p, { chave: 'din-' + v, tipo: 'novo', valor: v }, () => { adicionar(v); som('soltar'); });
+        itemArrastavel(p, { chave: 'din-' + v, tipo: 'novo', valor: v }, () => { adicionar(v); som(v >= 200 ? 'nota' : 'moeda'); });
         gaveta.appendChild(p);
       });
       caixa.appendChild(gaveta);
@@ -757,7 +813,7 @@
       bandeja.forEach((v, i) => {
         const p = desenharDinheiro(v);
         p.classList.add('na-bandeja');
-        itemArrastavel(p, { chave: 'band-' + i, tipo: 'naBandeja', i }, () => remover(i));
+        itemArrastavel(p, { chave: 'band-' + i, tipo: 'naBandeja', i }, () => { remover(i); som('tirar'); });
         dentro.appendChild(p);
       });
       if (!bandeja.length) dentro.appendChild(h('div', 'vazio', '⬇ Solte aqui'));
@@ -843,6 +899,7 @@
           itemArrastavel(p, { chave: `c${c}-${i}`, tipo: 'naCesta', c }, () => {
             // Com a fruta da barraca escolhida, clicar na cesta (mesmo em cima de uma fruta) coloca mais uma.
             if (estado.selecionado === NOVA) cestas[c]++; else cestas[c]--;
+            som(estado.selecionado === NOVA ? 'soltar' : 'tirar');
             atualizar();
           });
           dentro.appendChild(p);
@@ -1028,6 +1085,7 @@
     setTimeout(() => {
       $('#modal-vitoria').hidden = false;
       soltarConfete();
+      for (let i = 0; i < est; i++) setTimeout(() => som('estrela', i), animacoesReduzidas ? i * 200 : 450 + i * 250);
       $('#btn-proxima').focus();
     }, animacoesReduzidas ? 0 : 500);
   }
@@ -1061,12 +1119,14 @@
     if (estado.indice < ANOS[estado.ano].fases.length - 1) abrirFase(estado.indice + 1);
     else mostrarTela('fases');
   });
-  $('#btn-som').addEventListener('click', () => {
+  function trocarSom() {
     estado.som = !estado.som;
     salvar(CHAVE_SOM, estado.som);
     atualizarBotaoSom();
-    som('soltar');
-  });
+    som('acerto');
+  }
+  $('#btn-som').addEventListener('click', trocarSom);
+  $('#btn-som-jogo').addEventListener('click', trocarSom);
   $('#btn-ouvir').addEventListener('click', () => falar(estado.fase ? estado.fase.pedido : ''));
   $('#btn-como-jogar').addEventListener('click', () => { $('#modal-ajuda').hidden = false; });
   $('#btn-fechar-ajuda').addEventListener('click', () => { $('#modal-ajuda').hidden = true; });

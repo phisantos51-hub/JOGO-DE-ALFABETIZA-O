@@ -6,7 +6,7 @@ O robô tem uma barraca de feira. Em cada fase chega um cliente com um pedido ("
 
 ## Feito para o laboratório de informática
 
-- **Sem som obrigatório:** todo retorno é visual (cores, destaques, números que aparecem, estrelas). O som é opcional e começa **desligado**. Dá para ligar no botão "🔇 Som desligado" da tela inicial; com ele ligado aparece também o botão 🔊 para ouvir o pedido.
+- **Sem som obrigatório:** todo retorno é visual (cores, destaques, números que aparecem, estrelas). O som é opcional e começa **desligado**. Dá para ligar no botão "🔇 Som desligado" da tela inicial ou no botão "🔇 Som" no alto da tela do jogo. Com o som ligado tocam efeitos (sem narração): um "plop" ao colocar ou tirar peças, uma fanfarra e um "plim" por estrela ao acertar, um "hmm?" leve quando ainda não está certo, um toque por item na contagem da dica, moedas tilintando e notas fazendo barulho de papel. Aparece também o botão 🗣️, que lê o pedido em voz alta. A escolha fica guardada em cada computador.
 - **Mouse:** arraste e solte as peças. Quem ainda tem dificuldade para arrastar pode **clicar**: um clique na fruta coloca na sacola e outro clique tira. Não tem clique duplo. As peças são grandes e as áreas de soltar piscam e aceitam a peça mesmo se ela cair um pouco fora. Se a tela for pequena, ela rola sozinha quando a peça chega perto da borda.
 - **Sem tempo e sem mensagens negativas:** ao clicar em **✅ Pronto!**, se ainda não estiver certo, o robô mostra uma **dica** (conta os itens um a um com destaque, alinha as frutas lado a lado, mostra os saltos da sequência…) e a criança continua de onde parou.
 - **Estrelas:** acertou de primeira = ⭐⭐⭐; na segunda = ⭐⭐; depois = ⭐.
