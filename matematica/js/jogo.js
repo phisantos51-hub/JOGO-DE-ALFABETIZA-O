@@ -916,7 +916,8 @@
     Object.keys(ANOS).forEach((ano) => {
       const cfg = ANOS[ano];
       const total = cfg.fases.length * 3;
-      const ganhas = (estado.progresso[ano] || []).reduce((a, b) => a + (b || 0), 0);
+      // Só conta fases que existem (estrelas de fases retiradas não entram).
+      const ganhas = (estado.progresso[ano] || []).slice(0, cfg.fases.length).reduce((a, b) => a + (b || 0), 0);
       const botao = h('button', 'cartao-ano');
       botao.style.setProperty('--cor', cfg.cor);
       botao.innerHTML =
