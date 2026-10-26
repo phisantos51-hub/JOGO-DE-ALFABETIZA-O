@@ -2,8 +2,8 @@
 // realmente coleta as peças na ordem, sem bater e sem pegar peça errada.
 // Uso: node testes/fases.test.js
 const assert = require('assert');
-global.ANOS = require('../js/dados.js').ANOS;
-const { DIRECOES, gerarFase, contarBlocosIdeais } = require('../js/fases.js');
+global.ANOS = require('../letrinha/js/dados.js').ANOS;
+const { DIRECOES, gerarFase, contarBlocosIdeais } = require('../letrinha/js/fases.js');
 
 function simular(fase, passos) {
   let x = fase.inicio.x, y = fase.inicio.y, coletadas = 0;
