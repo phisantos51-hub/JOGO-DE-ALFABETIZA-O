@@ -3,201 +3,143 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Rota Digital</title>
-  <meta name="description" content="Jogo de Educação Digital para o Ciclo de Alfabetização: Programação, TICs e Cidadania Digital.">
-  <link rel="stylesheet" href="rota/estilo.css">
+  <title>Robô Letrinha</title>
+  <meta name="description" content="Jogo de alfabetização e programação para o 1º, 2º e 3º ano do Ensino Fundamental.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Andika:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/estilo.css">
 </head>
 <body>
-  <!-- Barra de cima: sempre visível -->
-  <header id="barra" class="barra">
-    <button id="btn-voltar" class="btn barra-btn" hidden>🗺️ Mapa</button>
-    <div class="barra-titulo">
-      <span id="carro-barra" class="carro-barra" aria-hidden="true"></span>
-      <h1 id="titulo-barra">Rota Digital</h1>
+  <!-- Tela inicial: escolha do ano -->
+  <section id="tela-inicio" class="tela ativa">
+    <header class="topo-inicio">
+      <div class="mascote" aria-hidden="true">🤖</div>
+      <h1>Robô Letrinha</h1>
+      <p class="lema">Programe o robô para pegar as letras e formar palavras!</p>
+    </header>
+    <div id="lista-anos" class="lista-anos"></div>
+    <div class="acoes-inicio">
+      <button id="btn-como-jogar" class="btn secundario">❓ Como jogar</button>
+      <button id="btn-som" class="btn secundario" aria-pressed="true">🔊 Som ligado</button>
+      <a class="btn secundario link-acessivel" href="acessivel/index.html">♿ Versão acessível (alunos cegos)</a>
+      <a class="btn secundario link-acessivel" href="matematica/index.html">🍎 Feira do Robô (matemática)</a>
     </div>
-    <div class="barra-direita">
-      <button id="btn-ajuda" class="btn barra-btn" title="Como jogar (tecla H)">❓ Como jogar</button>
-      <button id="btn-pausa" class="btn barra-btn" title="Pausar (tecla P)">⏸️ Pausar</button>
-      <button id="btn-som" class="btn barra-btn" aria-pressed="false" title="Ligar ou desligar o som">🔇 Som desligado</button>
-    </div>
-  </header>
-
-  <main>
-    <!-- ===== Tela inicial ===== -->
-    <section id="tela-inicio" class="tela ativa">
-      <div class="inicio-topo">
-        <div class="logo" aria-hidden="true">🚗🏙️</div>
-        <div>
-          <h2 class="logo-nome">Rota Digital</h2>
-          <p class="lema">Dirija pela Cidade Digital, cumpra as missões e ganhe os 3 selos!</p>
+    <details class="professor">
+      <summary>Para o professor</summary>
+      <p>Cada fase é liberada quando a anterior é concluída. O progresso fica salvo neste computador.</p>
+      <div class="acoes-inicio">
+        <button id="btn-zerar" class="btn secundario">🧽 Apagar o progresso</button>
+      </div>
+      <div id="confirmar-zerar" class="confirmar" hidden>
+        <p><b>Tem certeza?</b> Isso apaga todas as estrelas e fases liberadas deste computador.</p>
+        <div class="acoes-inicio">
+          <button id="btn-zerar-sim" class="btn perigo">Sim, apagar</button>
+          <button id="btn-zerar-nao" class="btn secundario">Cancelar</button>
         </div>
       </div>
+      <p id="aviso-zerar" class="aviso-zerar" role="status"></p>
+    </details>
+  </section>
 
-      <div class="inicio-caixa">
-        <h3><span class="passo">1</span> ✏️ Escreva o seu nome</h3>
-        <input id="campo-nome" class="campo-nome" type="text" maxlength="40" autocomplete="off" spellcheck="false" placeholder="Seu nome">
-        <p class="nota">O nome só aparece no certificado. Ele não fica guardado.</p>
-      </div>
+  <!-- Tela de fases -->
+  <section id="tela-fases" class="tela">
+    <header class="barra">
+      <button class="btn icone" data-voltar="inicio" aria-label="Voltar">⬅</button>
+      <h2 id="titulo-fases"></h2>
+    </header>
+    <p id="descricao-fases" class="descricao-fases"></p>
+    <div id="lista-fases" class="lista-fases"></div>
+  </section>
 
-      <div class="inicio-caixa">
-        <h3><span class="passo">2</span> 🎒 Escolha o seu ano</h3>
-        <div id="lista-anos" class="lista-anos"></div>
-      </div>
+  <!-- Tela do jogo -->
+  <section id="tela-jogo" class="tela">
+    <header class="barra">
+      <button class="btn icone" data-voltar="fases" aria-label="Voltar para as fases">⬅</button>
+      <h2 id="titulo-jogo"></h2>
+      <div class="estrelas-meta" id="meta-blocos"></div>
+    </header>
 
-      <div class="inicio-caixa">
-        <h3><span class="passo">3</span> 🎨 Escolha a cor do carro</h3>
-        <div id="lista-cores" class="lista-cores"></div>
-      </div>
-
-      <button id="btn-comecar" class="btn grande verde">🚗 Começar!</button>
-
-      <button class="btn-professor" data-abrir-professor>🔑 Área do professor</button>
-    </section>
-
-    <!-- ===== Mapa da cidade ===== -->
-    <section id="tela-mapa" class="tela">
-      <p class="instrucao">👆 Clique num bairro para ir até lá.</p>
-      <div id="mapa" class="mapa">
-        <div class="rua rua-h"></div>
-        <div class="rua rua-v"></div>
-        <button id="bairro-prog" class="bairro bairro-prog" data-bairro="prog"></button>
-        <button id="bairro-tic" class="bairro bairro-tic" data-bairro="tic"></button>
-        <button id="bairro-cid" class="bairro bairro-cid" data-bairro="cid"></button>
-        <div class="garagem" aria-hidden="true">
-          <span>🏠</span><span>🌳</span><span>🏪</span><span>🌳</span><span>🏠</span><span>🌷</span>
-          <div class="garagem-nome">🅿️ Garagem</div>
-        </div>
-        <button id="praca" class="praca" data-bairro="praca"></button>
-        <div id="carro-mapa" class="carro carro-mapa"></div>
-      </div>
-      <div id="selos-mapa" class="selos-mapa"></div>
-      <button class="btn-professor" data-abrir-professor>🔑 Área do professor</button>
-    </section>
-
-    <!-- ===== Lista de missões de um bairro ===== -->
-    <section id="tela-bairro" class="tela">
-      <div id="bairro-cabecalho" class="bairro-cabecalho"></div>
-      <div id="lista-missoes" class="lista-missoes"></div>
-    </section>
-
-    <!-- ===== Missão de Programação ===== -->
-    <section id="tela-prog" class="tela">
-      <div id="prog-objetivo" class="objetivo"></div>
-      <div class="prog-area">
-        <div class="prog-esquerda">
-          <div id="tabuleiro" class="tabuleiro"></div>
-          <div id="prog-mensagem" class="mensagem" role="status"></div>
-        </div>
-        <div class="prog-direita">
-          <div class="caixa-blocos">
-            <h3>🧰 Blocos <span class="nota-pequena">(clique para pôr no programa)</span></h3>
-            <div id="paleta" class="paleta"></div>
+    <div class="jogo">
+      <div class="coluna-tabuleiro">
+        <div class="missao">
+          <div class="figura" id="figura" aria-hidden="true"></div>
+          <div>
+            <div class="rotulo">Forme a palavra:</div>
+            <div class="encaixes" id="encaixes"></div>
           </div>
-          <div class="caixa-programa">
-            <h3>📜 Meu programa <span id="contador-blocos" class="contador"></span></h3>
-            <div id="programa" class="programa" aria-live="polite"></div>
-            <div class="acoes-programa">
-              <button id="btn-executar" class="btn grande verde">▶️ Executar</button>
-              <button id="btn-tirar" class="btn laranja">🗑️ Tirar bloco</button>
-              <button id="btn-limpar" class="btn cinza">🧽 Limpar tudo</button>
-            </div>
+          <button class="btn icone" id="btn-ouvir" aria-label="Ouvir a palavra">🔊</button>
+        </div>
+        <div class="tabuleiro" id="tabuleiro"></div>
+        <div class="mensagem" id="mensagem" role="status" aria-live="polite"></div>
+      </div>
+
+      <div class="coluna-programa">
+        <div class="painel">
+          <div class="rotulo">Blocos de comando</div>
+          <div class="paleta" id="paleta"></div>
+        </div>
+        <div class="painel">
+          <div class="rotulo">
+            Programa do robô
+            <span id="contador-blocos" class="contador"></span>
           </div>
+          <ol class="programa" id="programa" aria-label="Programa"></ol>
+        </div>
+        <div class="controles">
+          <button class="btn principal" id="btn-executar">▶ Executar</button>
+          <button class="btn secundario" id="btn-apagar" title="Apagar o último bloco">⌫ Apagar</button>
+          <button class="btn secundario" id="btn-limpar" title="Apagar todos os blocos">🗑 Limpar</button>
+          <button class="btn secundario" id="btn-dica">💡 Dica</button>
+          <button class="btn secundario" id="btn-velocidade" title="Velocidade do robô">🐢 Devagar</button>
         </div>
       </div>
-    </section>
+    </div>
+  </section>
 
-    <!-- ===== Missão de perguntas (TICs e Cidadania) ===== -->
-    <section id="tela-quiz" class="tela">
-      <div id="estrada" class="estrada"></div>
-      <div id="cartao" class="cartao"></div>
-      <div id="retorno" class="retorno" role="status" hidden></div>
-    </section>
-
-    <!-- ===== Praça Digital ===== -->
-    <section id="tela-praca" class="tela">
-      <div class="festa" aria-hidden="true">🎉🎈🏆🎈🎉</div>
-      <h2 class="titulo-praca">Você chegou à Praça Digital!</h2>
-      <div id="certificado" class="certificado"></div>
-      <div id="nome-certificado" class="nome-certificado" hidden>
-        <label for="campo-nome-cert">✏️ Escreva o seu nome para o certificado:</label>
-        <input id="campo-nome-cert" class="campo-nome" type="text" maxlength="40" autocomplete="off" spellcheck="false" placeholder="Seu nome">
+  <!-- Janela de vitória -->
+  <div class="modal" id="modal-vitoria" hidden>
+    <div class="cartao">
+      <div class="confete" id="confete" aria-hidden="true"></div>
+      <h2>Muito bem!</h2>
+      <div class="vitoria-figura" id="vitoria-figura"></div>
+      <div class="vitoria-palavra" id="vitoria-palavra"></div>
+      <div class="vitoria-estrelas" id="vitoria-estrelas"></div>
+      <p class="vitoria-dica" id="vitoria-dica"></p>
+      <div class="vitoria-frase" id="vitoria-frase" hidden>
+        <div class="rotulo">Leia a frase:</div>
+        <p id="frase-texto"></p>
+        <button class="btn secundario" id="btn-ouvir-frase">🔊 Ouvir a frase</button>
       </div>
-      <div class="acoes-praca">
-        <button id="btn-imprimir" class="btn azul">🖨️ Imprimir</button>
-        <button id="btn-praca-mapa" class="btn verde">🗺️ Voltar ao mapa</button>
+      <div class="controles">
+        <button class="btn secundario" id="btn-repetir-fase">↺ Jogar de novo</button>
+        <button class="btn principal" id="btn-proxima">Próxima fase ➜</button>
       </div>
-    </section>
-  </main>
-
-  <!-- ===== Janelas ===== -->
-  <div id="modal-ajuda" class="modal" hidden>
-    <div class="janela larga" role="dialog" aria-modal="true" aria-labelledby="titulo-ajuda">
-      <h2 id="titulo-ajuda">❓ Como jogar</h2>
-      <div id="conteudo-ajuda" class="conteudo-ajuda"></div>
-      <button class="btn grande verde" data-fechar>👍 Entendi!</button>
     </div>
   </div>
 
-  <div id="modal-pausa" class="modal" hidden>
-    <div class="janela" role="dialog" aria-modal="true" aria-labelledby="titulo-pausa">
-      <div class="icone-grande" aria-hidden="true">⏸️</div>
-      <h2 id="titulo-pausa">Jogo pausado</h2>
-      <p>O carrinho está esperando você.</p>
-      <button id="btn-continuar" class="btn grande verde">▶️ Continuar</button>
-    </div>
-  </div>
-
-  <div id="modal-resultado" class="modal" hidden>
-    <div class="janela" role="dialog" aria-modal="true" aria-labelledby="titulo-resultado">
-      <div id="resultado-conteudo"></div>
-      <div id="resultado-acoes" class="acoes-janela"></div>
-    </div>
-  </div>
-
-  <div id="modal-professor" class="modal" hidden>
-    <div class="janela professor" role="dialog" aria-modal="true" aria-labelledby="titulo-professor">
-      <h2 id="titulo-professor">🔑 Área do professor</h2>
-      <div id="prof-pergunta">
-        <p>Para entrar, responda: <b id="prof-conta"></b></p>
-        <div class="linha">
-          <input id="prof-resposta" class="campo-numero" type="text" inputmode="numeric" maxlength="3" autocomplete="off">
-          <button id="prof-entrar" class="btn azul">Entrar</button>
-        </div>
-        <p id="prof-erro" class="erro" role="alert"></p>
+  <!-- Janela de ajuda -->
+  <div class="modal" id="modal-ajuda" hidden>
+    <div class="cartao ajuda">
+      <h2>Como jogar</h2>
+      <ol>
+        <li>Olhe a figura e a palavra que o robô precisa formar.</li>
+        <li>Toque nas <b>setas</b> para montar o programa: cada seta faz o robô andar <b>uma casa</b>.</li>
+        <li>O robô pega a peça quando passa por cima dela. Pegue as peças <b>na ordem certa</b>!</li>
+        <li>Cuidado com as <b>pedras</b> 🪨 e com as peças que não fazem parte da palavra.</li>
+        <li>No 2º e 3º ano, use o bloco <b>🔁 REPETIR</b>: ele repete a seta que vem logo depois. Toque no número para mudar.</li>
+        <li>No 3º ano existe um <b>limite de blocos</b>: pense no caminho mais curto!</li>
+        <li>Toque em <b>▶ Executar</b>. Se der errado, arrume o programa e tente de novo.</li>
+      </ol>
+      <p class="ajuda-teclado">Teclado: setas adicionam blocos, <b>R</b> adiciona repetir, <b>Enter</b> executa e <b>Backspace</b> apaga.</p>
+      <div class="controles">
+        <button class="btn principal" id="btn-fechar-ajuda">Entendi!</button>
       </div>
-      <div id="prof-painel" hidden>
-        <p>O progresso fica salvo só neste navegador, neste computador. O nome do aluno não é salvo.</p>
-        <button id="prof-liberar" class="btn azul">🔓 Liberar todas as fases</button>
-        <button id="prof-apagar" class="btn vermelho">🧽 Apagar progresso</button>
-        <div id="prof-confirmar" class="confirmar" hidden>
-          <p><b>Tem certeza?</b> Isso apaga as estrelas e os selos de todos os anos neste computador.</p>
-          <div class="linha">
-            <button id="prof-apagar-sim" class="btn vermelho">Sim, apagar</button>
-            <button id="prof-apagar-nao" class="btn cinza">Cancelar</button>
-          </div>
-        </div>
-        <p id="prof-aviso" class="aviso" role="status"></p>
-        <details class="dicas-professor">
-          <summary>📘 Para o professor</summary>
-          <ul>
-            <li><b>Programação:</b> sequência (1º ano), repetição (2º ano), condicional e limite de blocos (3º ano).</li>
-            <li><b>TICs:</b> aparelhos e periféricos (1º ano), ícones (2º ano), tipos de mídia (3º ano).</li>
-            <li><b>Cidadania Digital (Letramento Digital):</b> dados pessoais, pedir ajuda, senhas, gentileza, autoria e tempo de tela.</li>
-            <li>Os bairros podem ser jogados em qualquer ordem: um bairro por aula.</li>
-            <li>Atalhos: setas do teclado = blocos de seta, R = REPETIR, E = ESPERE, Enter = Executar, Delete = tirar bloco, 1/2/3 = escolher resposta, P = pausa, H = como jogar.</li>
-            <li>As perguntas ficam no arquivo <code>perguntas.js</code>.</li>
-          </ul>
-        </details>
-      </div>
-      <button class="btn cinza" data-fechar>✖️ Fechar</button>
     </div>
   </div>
 
-  <div id="confete" class="confete" aria-hidden="true"></div>
-
-  <script src="rota/icones.js"></script>
-  <script src="rota/fases.js"></script>
-  <script src="perguntas.js"></script>
-  <script src="rota/jogo.js"></script>
+  <script src="js/dados.js"></script>
+  <script src="js/fases.js"></script>
+  <script src="js/jogo.js"></script>
 </body>
 </html>
