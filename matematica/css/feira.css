@@ -494,3 +494,144 @@ body.arrastando, body.arrastando * { cursor: grabbing !important; }
   .grade-dez .fruta { width: 44px; height: 44px; font-size: 30px; }
   .caixas-par, .tabela-valor { grid-template-columns: 1fr; }
 }
+
+/* =====================================================================
+   Atacado do Robô (multiplicação e divisão, só no 3º ano)
+   ===================================================================== */
+.extra-atacado {
+  margin-top: 8px; padding: 6px 10px; border-radius: 12px;
+  background: #f3e8ff; color: #5b21b6; font-size: 17px; font-weight: 700;
+}
+.extra-fases { margin: 0 0 16px; }
+.extra-fases:empty { display: none; }
+.entrada-atacado {
+  width: 100%; display: flex; align-items: center; gap: 16px; text-align: left;
+  background: #f3e8ff; border: 4px solid #7c3aed; border-radius: 22px;
+  padding: 14px 20px; cursor: pointer; box-shadow: 0 7px 0 #7c3aed;
+  transition: transform 0.1s;
+}
+.entrada-atacado:hover { transform: translateY(-3px); }
+.entrada-atacado:active { transform: translateY(3px); box-shadow: 0 2px 0 #7c3aed; }
+.entrada-atacado .fig { font-size: 52px; line-height: 1; }
+.entrada-atacado .txt { flex: 1; display: flex; flex-direction: column; }
+.entrada-atacado .txt b { font-size: 30px; color: #5b21b6; }
+.entrada-atacado .txt small { font-size: 19px; color: var(--suave); font-weight: 700; }
+.entrada-atacado .seta { font-size: 40px; color: #7c3aed; font-weight: 700; }
+
+/* Contas escritas ao lado das frutas */
+.quadro-contas {
+  display: flex; flex-direction: column; align-items: center; gap: 6px;
+  background: #fff; border: 4px solid #c4b5fd; border-radius: var(--raio); padding: 10px 14px;
+}
+.conta-viva { display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 8px; }
+.conta-viva .termo { font-size: 40px; font-weight: 700; min-width: 30px; text-align: center; }
+.conta-viva .op { font-size: 40px; font-weight: 700; color: #7c3aed; }
+.conta-viva .palavra { font-size: 24px; font-weight: 700; color: var(--suave); }
+.conta-viva.soma .termo { font-size: 30px; color: var(--suave); }
+.conta-viva.soma .op { font-size: 30px; }
+.conta-viva.pronta { opacity: 0.85; }
+.legenda-conta { margin: 0; display: flex; gap: 14px; flex-wrap: wrap; justify-content: center; font-size: 16px; color: var(--suave); font-weight: 700; }
+
+/* Resposta digitada: número grande com − e + */
+.campo-numero {
+  display: inline-flex; align-items: center; gap: 6px;
+  border: 4px dashed var(--zona); border-radius: 16px; padding: 6px; background: #fff;
+}
+.campo-numero input {
+  width: 110px; height: 72px; text-align: center; font: inherit; font-size: 44px; font-weight: 700;
+  border: 3px solid var(--borda); border-radius: 12px; color: var(--texto);
+}
+.campo-numero input:focus { outline: 4px solid var(--zona); outline-offset: 1px; }
+.campo-numero input::placeholder { color: var(--zona); }
+.btn-campo {
+  width: 58px; height: 58px; border-radius: 50%; border: 3px solid var(--borda); background: #f4efe4;
+  font-size: 34px; font-weight: 700; cursor: pointer; line-height: 1; box-shadow: var(--sombra);
+}
+.btn-campo:hover { border-color: var(--zona); }
+.btn-campo:active { transform: translateY(2px); box-shadow: none; }
+.campo-numero.certo { border-style: solid; }
+
+/* Grupos (cestas, caixas, pacotes, pratos, clientes) */
+.grupo-atacado { position: relative; }
+.grupo-atacado .contador {
+  margin: 6px auto 0; min-width: 44px; padding: 0 10px; border-radius: 22px;
+  background: #ede9fe; color: #5b21b6; font-size: 26px; font-weight: 700; text-align: center;
+}
+.rec-pacote { background: #eef6ff; border-color: #7aa7e8; }
+.rec-prato { background: #fff; border-color: #c9c3b4; border-radius: 50px; }
+.rec-cliente { background: #fff1e6; border-color: #f0a46b; }
+.modelo { background: #f4efe4; border-style: dashed; }
+.mini-grupo {
+  display: inline-flex; flex-direction: column; align-items: center; line-height: 1;
+  background: #fff; border: 2px solid var(--borda); border-radius: 10px; padding: 2px 4px; margin: 2px; position: relative;
+}
+.mini-grupo b { font-size: 22px; }
+.mini-grupo small { font-size: 16px; display: flex; flex-wrap: wrap; justify-content: center; max-width: 92px; }
+.mini-grupo i { font-style: normal; position: relative; }
+.mini-grupo .selo { top: -18px; right: -14px; min-width: 28px; height: 28px; line-height: 28px; font-size: 16px; }
+
+/* Monte para repartir */
+.banca-monte .pilha { display: flex; flex-wrap: wrap; gap: 4px; min-height: 64px; align-items: center; }
+.banca-monte .no-monte { background: #fff; border: 3px solid var(--madeira-escura); width: 58px; height: 58px; font-size: 40px; box-shadow: var(--sombra); }
+.monte-escolhido .pilha { outline: 5px solid var(--zona); outline-offset: 4px; border-radius: 10px; animation: pulsar 1s infinite; }
+.rodape-monte { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; margin-top: 8px; }
+.contador-monte { font-size: 22px; font-weight: 700; }
+.btn-rodada { font-size: 20px; }
+.linha-monte { display: flex; gap: 18px; align-items: flex-start; flex-wrap: wrap; }
+.linha-monte .pilha { flex: 1; min-width: 240px; }
+
+/* Caixas para "quantas cabem" */
+.caixa-vazia {
+  width: 140px; min-height: 84px; background: #d9a066; border: 4px solid #8a5a2b; border-radius: 10px;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; box-shadow: var(--sombra);
+}
+.caixa-vazia .etiqueta { background: #fff; border-radius: 8px; padding: 0 8px; font-weight: 700; font-size: 17px; }
+.caixa-vazia .buracos { display: flex; gap: 4px; flex-wrap: wrap; justify-content: center; }
+.caixa-vazia .buracos i { width: 16px; height: 16px; border-radius: 50%; background: #8a5a2b; }
+.balcao { background: #eefbf1; border: 4px solid #6cc48a; border-radius: var(--raio); padding: 12px; min-height: 170px; }
+.fila-caixas { display: flex; flex-wrap: wrap; gap: 12px; min-height: 110px; }
+.caixa-montada {
+  background: #f6dcbc; border: 4px solid #8a5a2b; border-radius: 12px; padding: 8px; min-width: 170px; cursor: pointer;
+}
+.caixa-montada.cheia { background: #dcfce7; border-color: var(--principal); }
+.caixa-montada .rotulo { font-size: 18px; margin-bottom: 4px; }
+.buracos-grandes { display: grid; grid-template-columns: repeat(5, 52px); gap: 4px; }
+.buracos-grandes .fruta { width: 52px; height: 52px; font-size: 36px; }
+.buraco { width: 52px; height: 52px; border-radius: 50%; border: 3px dashed #8a5a2b; background: #fff8ee; }
+.btn-tirar-caixa { margin-top: 6px; border: 2px solid var(--borda); background: #fff; border-radius: 10px; font-size: 16px; padding: 4px 8px; cursor: pointer; }
+
+/* Fileiras na banca (organização retangular) */
+.bandeja-fileira {
+  display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 8px 10px;
+  background: #fff; border: 4px solid var(--madeira-escura); border-radius: 14px; box-shadow: var(--sombra);
+}
+.etiqueta-fileira { font-weight: 700; font-size: 17px; }
+.fileira { display: flex; gap: 4px; }
+.fruta-fileira { font-size: 38px; width: 52px; height: 52px; display: inline-flex; align-items: center; justify-content: center; }
+.banca-arrumada { background: #fdebd0; border: 4px solid var(--madeira-escura); border-radius: var(--raio); padding: 12px; min-height: 160px; }
+.grade-fileiras { display: flex; flex-direction: column; gap: 6px; align-items: flex-start; }
+.linha-grade { display: flex; align-items: center; gap: 8px; }
+.linha-grade.cabecalho .num-coluna { width: 52px; text-align: center; font-weight: 700; color: var(--suave); font-size: 17px; }
+.linha-grade.cabecalho { padding-left: 6px; }
+.linha-grade.cabecalho .num-coluna { margin-right: -4px; }
+.num-fileira { width: 44px; font-weight: 700; color: #5b21b6; font-size: 20px; text-align: right; }
+.fileira.na-banca { background: #fff; border: 2px solid var(--borda); border-radius: 12px; padding: 2px 4px; cursor: pointer; position: relative; }
+.mini-retangulo { display: inline-grid; grid-template-columns: repeat(var(--colunas), auto); gap: 1px 3px; font-size: 20px; line-height: 1.1; }
+.mini-retangulo i { font-style: normal; }
+
+/* Lista de contas (tabuadas) */
+.lista-contas { display: grid; grid-template-columns: repeat(auto-fit, minmax(380px, 1fr)); gap: 12px; }
+.item-conta {
+  background: #fff; border: 4px solid #c4b5fd; border-radius: var(--raio); padding: 10px;
+  display: flex; flex-direction: column; align-items: center; gap: 6px;
+}
+.desenho-conta { display: flex; flex-wrap: wrap; justify-content: center; gap: 2px; }
+
+@media (max-width: 640px) {
+  .lista-contas { grid-template-columns: 1fr; }
+  .conta-viva .termo, .conta-viva .op { font-size: 32px; }
+  .campo-numero input { width: 84px; height: 60px; font-size: 36px; }
+  .buracos-grandes { grid-template-columns: repeat(5, 40px); }
+  .buracos-grandes .fruta, .buraco { width: 40px; height: 40px; font-size: 28px; }
+  .fruta-fileira, .linha-grade.cabecalho .num-coluna { width: 40px; font-size: 30px; }
+}

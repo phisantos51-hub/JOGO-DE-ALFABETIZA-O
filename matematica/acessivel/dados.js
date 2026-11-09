@@ -57,6 +57,7 @@ function paraFala(texto) {
     .replace(/R\$ ?(\d+),(\d{2})/g, (_, r, c) => valorFalado(Number(r) * 100 + Number(c)))
     .replace(/−/g, ' menos ')
     .replace(/×/g, ' vezes ')
+    .replace(/÷/g, ' dividido por ')
     .replace(/\+/g, ' mais ')
     .replace(/=/g, ' é igual a ')
     // Palavras em maiúsculas (MAIS, ÍMPAR) seriam soletradas pela voz.

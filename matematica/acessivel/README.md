@@ -1,6 +1,6 @@
 # 🍎 Feira do Robô Acessível
 
-Versão da Feira do Robô para alunos cegos ou com baixa visão. Ela tem **as mesmas 60 fases** do jogo da turma (mesmos pedidos, mesmos números), então o aluno faz a mesma atividade que os colegas, ao mesmo tempo.
+Versão da Feira do Robô para alunos cegos ou com baixa visão. Ela tem **as mesmas 60 fases** do jogo da turma, mais as 20 do Atacado do Robô no 3º ano (mesmos pedidos, mesmos números), então o aluno faz a mesma atividade que os colegas, ao mesmo tempo.
 
 Tudo funciona **só pelo teclado**. O jogo fala sozinho, toca um som para cada fruta (para contar ouvindo) e também funciona com o leitor de tela NVDA. As teclas são as mesmas da versão acessível do Robô Letrinha.
 
@@ -33,6 +33,22 @@ No menu: setas para cima e para baixo escolhem, Enter confirma.
 | **Par ou ímpar** | ← → passam pelos números; ↑ (ou P) põe em par, ↓ (ou I) em ímpar. |
 | **Dinheiro e troco** | ← → escolhem a nota ou moeda (nota faz barulho de papel, moeda tilinta); ↑ põe na bandeja, ↓ tira. **O** diz o que tem na bandeja. |
 | **Grupos iguais** | ← → passam pelas cestas e, depois da última, pela resposta; ↑ ↓ põem ou tiram fruta, ou trocam o cartão. |
+
+## Atacado do Robô (multiplicação e divisão, só no 3º ano)
+
+Com o **3º ano** escolhido, o menu ganha duas opções: **"Atacado do Robô, multiplicação e divisão: jogar a fase…"** e **"Escolher outra fase do Atacado do Robô"**. No 1º e no 2º ano elas não aparecem. As fases são as mesmas da turma (`../js/atacado-fases.js`).
+
+| Atividade | Como o aluno faz |
+| --- | --- |
+| **Grupos iguais, dobro e triplo** | ← → passam de uma cesta (ou prato) para outra; ↑ põe uma fruta, ↓ tira. Depois da última fica a resposta ("3 vezes 2 é igual a…"). **O** toca as cestas, cada uma com um som um pouco diferente. |
+| **Parcelas iguais** | ← → passam pelos espaços da soma e da multiplicação; ↑ ↓ trocam o número. |
+| **Fileiras** | ↑ põe uma fileira inteira na banca (toca um som por fruta), ↓ tira; → vai para a resposta. **O** toca as fileiras, uma de cada vez. |
+| **Tabuadas e contas** | ← → passam de uma conta para outra; as teclas de número escrevem o resultado (↑ ↓ também mudam). **O** toca a conta em sons: um grupo de cada vez. |
+| **Repartir, metade, terça parte…** | ← → escolhem o cliente, a cesta ou o prato; ↑ dá uma fruta do monte, ↓ devolve; **R** dá 1 para cada. Na última fase o que sobra fica no monte, fora das cestas, e o aluno diz quanto sobrou. |
+| **Quantas caixas cabem** | Depois da última caixa fica "pegar uma caixa vazia" (↑ pega). Na caixa, ↑ põe um ovo e ↓ tira. |
+| **Multiplicação e divisão juntas** | Ouve "4 vezes 3 é igual a 12" e escreve 12 dividido por 3 e 12 dividido por 4. |
+
+Nas fases de cartões, ↑ ↓ trocam o cartão. Nas fases de digitar, o aluno digita o número (Backspace apaga). A dica fala a contagem ("3, 6, 9, 12") e o que já foi feito continua lá. "Apagar o progresso" também apaga as estrelas do Atacado.
 
 ## Quando ainda não está certo
 
@@ -67,6 +83,7 @@ acessivel/feira-acessivel.css   ajustes de visual (o alto contraste vem do Robô
 acessivel/dados.js              nomes das frutas e do dinheiro, falas e braille
 acessivel/sons.js               sons de cada peça e sequências para contar
 acessivel/jogo.js               teclado, menu, atividades e dicas
+acessivel/atacado.js            atividades do Atacado do Robô (multiplicação e divisão)
 ```
 
 As fases e as regras são as mesmas do jogo da turma (`../js/fases.js` e `../js/regras.js`). A voz vem de `../../acessivel/som.js`.

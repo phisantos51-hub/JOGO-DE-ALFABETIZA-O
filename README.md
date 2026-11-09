@@ -19,7 +19,9 @@ A pasta [`acessivel/`](acessivel/) tem uma versão do jogo feita para alunos ceg
 
 ## Feira do Robô (matemática)
 
-A pasta [`matematica/`](matematica/) tem um segundo jogo, de **matemática**, para o mesmo Ciclo de Alfabetização: o robô tem uma barraca de feira e a criança ajuda a contar, juntar, separar e pagar frutas e verduras. Tudo é feito com o mouse (arrastar e soltar ou clicar), sem depender de som. Veja [`matematica/README.md`](matematica/README.md). Ela também tem uma versão acessível para alunos cegos, em [`matematica/acessivel/`](matematica/acessivel/).
+A pasta [`matematica/`](matematica/) tem um segundo jogo, de **matemática**, para o mesmo Ciclo de Alfabetização: o robô tem uma barraca de feira e a criança ajuda a contar, juntar, separar e pagar frutas e verduras. No 3º ano ela tem também o **Atacado do Robô**, com multiplicação e divisão. Tudo é feito com o mouse (arrastar e soltar ou clicar), sem depender de som. Veja [`matematica/README.md`](matematica/README.md). Ela também tem uma versão acessível para alunos cegos, em [`matematica/acessivel/`](matematica/acessivel/).
+
+Os dois jogos são **independentes**: um não tem botão para o outro, cada um tem o próprio título na aba do navegador e o próprio progresso salvo. Os endereços continuam os mesmos: o Robô Letrinha em https://phisantos51-hub.github.io/JOGO-DE-ALFABETIZA-O/ e a Feira do Robô em https://phisantos51-hub.github.io/JOGO-DE-ALFABETIZA-O/matematica/.
 
 ## Como jogar
 

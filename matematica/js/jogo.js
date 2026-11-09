@@ -35,6 +35,11 @@
   function estrelasDe(ano, indice) {
     return (estado.progresso[ano] || [])[indice] || 0;
   }
+  // Partes do jogo: os anos (1, 2, 3) e o Atacado do Robô ('atacado'), que só aparece no 3º ano.
+  const TEM_ATACADO = typeof ATACADO !== 'undefined';
+  function parte(chave) {
+    return chave === 'atacado' && TEM_ATACADO ? ATACADO : ANOS[chave];
+  }
   function liberada(ano, indice) {
     return estado.liberado || indice === 0 || estrelasDe(ano, indice - 1) > 0;
   }
@@ -954,6 +959,13 @@
     sacola: mecSacola, quantos: mecQuantos, comparar: mecComparar, sequencia: mecSequencia,
     valor: mecValor, parimpar: mecParImpar, dinheiro: mecDinheiro, grupos: mecGrupos,
   };
+  // Atacado do Robô (multiplicação e divisão): mecânicas em atacado.js.
+  if (typeof AtacadoMecanicas === 'function') {
+    Object.assign(MECANICAS, AtacadoMecanicas({
+      h, $, estado, itemArrastavel, zonaAtiva, selecionar, atualizar, contar, mensagem,
+      criarFichas, desenharSlot, desenharBanco, som,
+    }));
+  }
 
   // =====================================================================
   // Telas
@@ -961,7 +973,7 @@
   function mostrarTela(nome) {
     document.querySelectorAll('.tela').forEach((t) => t.classList.remove('ativa'));
     $('#tela-' + nome).classList.add('ativa');
-    document.body.classList.toggle('caixa-alta', nome !== 'inicio' && Boolean(ANOS[estado.ano].caixaAlta));
+    document.body.classList.toggle('caixa-alta', nome !== 'inicio' && Boolean(parte(estado.ano).caixaAlta));
     if (nome === 'inicio') montarInicio();
     if (nome === 'fases') abrirFases(estado.ano);
     window.scrollTo(0, 0);
@@ -982,7 +994,10 @@
         `<div class="sub">${cfg.subtitulo}</div>` +
         `<div class="icones">${cfg.fases.slice(0, 5).map((f) => f.icone).join(' ')}</div>` +
         `<p>${cfg.descricao}</p>` +
-        `<div class="progresso">⭐ ${ganhas} de ${total} estrelas</div>`;
+        `<div class="progresso">⭐ ${ganhas} de ${total} estrelas</div>` +
+        (TEM_ATACADO && Number(ano) === ATACADO.ano
+          ? `<div class="extra-atacado">🏭 + <b>${ATACADO.titulo}</b>: ${ATACADO.subtitulo.toLowerCase()} · ⭐ ${estrelasParte('atacado')} de ${ATACADO.fases.length * 3}</div>`
+          : '');
       botao.addEventListener('click', () => { estado.ano = Number(ano); mostrarTela('fases'); });
       lista.appendChild(botao);
     });
@@ -990,11 +1005,38 @@
     $('#btn-liberar').textContent = estado.liberado ? '🔒 Liberar fases uma a uma' : '🔓 Liberar todas as fases';
   }
 
+  function estrelasParte(chave) {
+    const cfg = parte(chave);
+    return (estado.progresso[chave] || []).slice(0, cfg.fases.length).reduce((a, b) => a + (b || 0), 0);
+  }
+
+  // No 3º ano aparece a entrada do Atacado; dentro do Atacado, o botão para voltar ao 3º ano.
+  function montarExtraFases(ano) {
+    const extra = $('#extra-fases');
+    extra.innerHTML = '';
+    if (!TEM_ATACADO) return;
+    if (ano === 'atacado') {
+      const voltar = h('button', 'btn secundario', `⬅ Voltar para o ${ANOS[ATACADO.ano].titulo}`);
+      voltar.addEventListener('click', () => { estado.ano = ATACADO.ano; abrirFases(estado.ano); });
+      extra.appendChild(voltar);
+      return;
+    }
+    if (Number(ano) !== ATACADO.ano) return;
+    const b = h('button', 'entrada-atacado');
+    b.innerHTML =
+      '<span class="fig" aria-hidden="true">🤖📦</span>' +
+      `<span class="txt"><b>${ATACADO.titulo}</b><small>${ATACADO.subtitulo} · ${ATACADO.fases.length} fases · ⭐ ${estrelasParte('atacado')} de ${ATACADO.fases.length * 3}</small></span>` +
+      '<span class="seta" aria-hidden="true">➜</span>';
+    b.addEventListener('click', () => { estado.ano = 'atacado'; abrirFases('atacado'); window.scrollTo(0, 0); });
+    extra.appendChild(b);
+  }
+
   function abrirFases(ano) {
-    const cfg = ANOS[ano];
+    const cfg = parte(ano);
     document.documentElement.style.setProperty('--cor-ano', cfg.cor);
     $('#titulo-fases').textContent = `${cfg.titulo} · ${cfg.subtitulo}`;
     $('#descricao-fases').textContent = cfg.descricao;
+    montarExtraFases(ano);
     const lista = $('#lista-fases');
     lista.innerHTML = '';
     cfg.fases.forEach((fase, i) => {
@@ -1013,7 +1055,7 @@
   }
 
   function abrirFase(indice) {
-    const cfg = ANOS[estado.ano];
+    const cfg = parte(estado.ano);
     const fase = cfg.fases[indice];
     estado.indice = indice;
     estado.fase = fase;
@@ -1079,7 +1121,7 @@
       caixa.appendChild(s);
     }
     $('#vitoria-resumo').innerHTML = estado.mec.resumo();
-    const cfg = ANOS[estado.ano];
+    const cfg = parte(estado.ano);
     const ultima = estado.indice === cfg.fases.length - 1;
     $('#btn-proxima').textContent = ultima ? '🏆 Ver as fases' : 'Próxima fase ➜';
     setTimeout(() => {
@@ -1116,7 +1158,7 @@
   $('#btn-repetir-fase').addEventListener('click', () => abrirFase(estado.indice));
   $('#btn-proxima').addEventListener('click', () => {
     $('#modal-vitoria').hidden = true;
-    if (estado.indice < ANOS[estado.ano].fases.length - 1) abrirFase(estado.indice + 1);
+    if (estado.indice < parte(estado.ano).fases.length - 1) abrirFase(estado.indice + 1);
     else mostrarTela('fases');
   });
   function trocarSom() {

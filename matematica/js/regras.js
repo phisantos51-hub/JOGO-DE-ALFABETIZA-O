@@ -45,6 +45,23 @@
 
   function ehPar(n) { return n % 2 === 0; }
 
+  // ---------- Atacado do Robô (multiplicação e divisão) ----------
+  // "3 × 4" ou "12 ÷ 4" → { a, op, b, resultado }
+  function conta(texto) {
+    const m = String(texto).match(/^\s*(\d+)\s*([×÷])\s*(\d+)\s*$/);
+    if (!m) throw new Error('conta inválida: ' + texto);
+    const a = Number(m[1]);
+    const b = Number(m[3]);
+    return { a, op: m[2], b, resultado: m[2] === '×' ? a * b : a / b };
+  }
+  // Repartir: quanto fica em cada grupo e quanto sobra.
+  function repartir(total, grupos) {
+    return { cada: Math.floor(total / grupos), sobra: total % grupos };
+  }
+  // Nome da parte: 2 → metade, 3 → terça parte...
+  const NOMES_PARTE = { 2: 'metade', 3: 'terça parte', 4: 'quarta parte', 5: 'quinta parte', 10: 'décima parte' };
+  function nomeParte(grupos) { return NOMES_PARTE[grupos] || null; }
+
   // Resposta certa de cada fase, no mesmo formato que a tela entrega.
   function respostaCerta(fase) {
     switch (fase.tipo) {
@@ -61,8 +78,35 @@
       case 'parimpar': return fase.numeros.map((n) => (ehPar(n) ? 'par' : 'impar'));
       case 'dinheiro': return fase.pago ? fase.pago - totalProdutos(fase) : totalProdutos(fase);
       case 'grupos': return { cestas: Array(fase.cestas).fill(fase.porCesta), total: fase.cestas * fase.porCesta };
+      // Atacado do Robô
+      case 'montar': return { grupos: Array(fase.grupos).fill(fase.porGrupo), total: fase.grupos * fase.porGrupo };
+      case 'parcelas': {
+        const t = fase.grupos * fase.porGrupo;
+        return [t, fase.grupos, fase.porGrupo, t];
+      }
+      case 'retangulo': return { linhas: fase.linhas, total: fase.linhas * fase.colunas };
+      case 'contas': return fase.contas.map((c) => conta(c).resultado);
+      case 'repartir': {
+        const r = repartir(fase.total, fase.grupos);
+        return { grupos: Array(fase.grupos).fill(r.cada), monte: r.sobra, respostas: r.sobra ? [r.cada, r.sobra] : [r.cada] };
+      }
+      case 'cabem': {
+        const n = fase.total / fase.porCaixa;
+        return { caixas: Array(n).fill(fase.porCaixa), monte: 0, total: n };
+      }
+      case 'relacao': {
+        const t = fase.grupos * fase.porGrupo;
+        return [t / fase.porGrupo, t / fase.grupos];
+      }
       default: throw new Error('tipo de fase desconhecido: ' + fase.tipo);
     }
+  }
+
+  // Confere uma lista de números: devolve os índices errados e quantos estão vazios.
+  function conferirLista(certa, r) {
+    const erradas = [];
+    certa.forEach((v, i) => { if (r[i] !== v) erradas.push(i); });
+    return { erradas, vazias: certa.filter((_, i) => r[i] === null || r[i] === undefined).length };
   }
 
   // Confere a resposta. Devolve { ok, ... } com detalhes para a dica.
@@ -94,6 +138,50 @@
         const totalOk = r.total === certa.total;
         return { ok: cestasErradas.length === 0 && totalOk, cestasErradas, totalOk, semTotal: r.total === null };
       }
+      // ---------- Atacado do Robô ----------
+      // Nas fases com "digitar", mexer nas frutas é só ajuda: vale a resposta.
+      case 'montar': {
+        const gruposErrados = [];
+        r.grupos.forEach((n, i) => { if (n !== fase.porGrupo) gruposErrados.push(i); });
+        const totalOk = r.total === certa.total;
+        const montou = gruposErrados.length === 0;
+        return { ok: totalOk && (montou || Boolean(fase.digitar)), gruposErrados, totalOk, semTotal: r.total === null || r.total === undefined };
+      }
+      case 'parcelas': {
+        // A multiplicação vale nas duas ordens (4 × 3 ou 3 × 4).
+        const ordem = r[1] === fase.porGrupo && r[2] === fase.grupos ? [certa[0], fase.porGrupo, fase.grupos, certa[3]] : certa;
+        const c = conferirLista(ordem, r);
+        return { ok: c.erradas.length === 0, ...c };
+      }
+      case 'retangulo': {
+        const linhasOk = r.linhas === fase.linhas;
+        const totalOk = r.total === certa.total;
+        return { ok: totalOk && (linhasOk || Boolean(fase.digitar)), linhasOk, totalOk, semTotal: r.total === null || r.total === undefined };
+      }
+      case 'contas':
+      case 'relacao': {
+        const c = conferirLista(certa, r);
+        return { ok: c.erradas.length === 0, ...c };
+      }
+      case 'repartir': {
+        const gruposErrados = [];
+        r.grupos.forEach((n, i) => { if (n !== certa.grupos[0]) gruposErrados.push(i); });
+        const iguais = r.grupos.every((n) => n === r.grupos[0]);
+        const repartiu = gruposErrados.length === 0 && r.monte === certa.monte;
+        const c = conferirLista(certa.respostas, r.respostas);
+        return {
+          ok: c.erradas.length === 0 && (repartiu || Boolean(fase.digitar)),
+          repartiu, iguais, gruposErrados, monte: r.monte, sobra: certa.monte, cada: certa.grupos[0],
+          respostasErradas: c.erradas, vazias: c.vazias,
+        };
+      }
+      case 'cabem': {
+        const incompletas = [];
+        r.caixas.forEach((n, i) => { if (n !== fase.porCaixa) incompletas.push(i); });
+        const montou = incompletas.length === 0 && r.monte === 0 && r.caixas.length === certa.total;
+        const totalOk = r.total === certa.total;
+        return { ok: totalOk && (montou || Boolean(fase.digitar)), montou, incompletas, monte: r.monte, totalOk, semTotal: r.total === null || r.total === undefined };
+      }
       default: throw new Error('tipo de fase desconhecido: ' + fase.tipo);
     }
   }
@@ -118,6 +206,7 @@
   const Regras = {
     VALOR_UNIDADE, totalSacola, decompor, sacolaInicial, empacotar, dinheiro,
     totalProdutos, ehPar, respostaCerta, verificar, estrelas, embaralhar,
+    conta, repartir, nomeParte,
   };
   if (typeof module !== 'undefined' && module.exports) module.exports = Regras;
   else raiz.Regras = Regras;

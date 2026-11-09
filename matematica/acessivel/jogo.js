@@ -45,7 +45,16 @@
     seq: 0, // muda a cada tecla: interrompe sons e dicas que estavam tocando
     ultimaFala: '',
     confirmandoApagar: false,
+    parte: 'ano', // 'ano' = fases do ano escolhido; 'atacado' = Atacado do Robô (só no 3º ano)
   };
+
+  // ---------- Atacado do Robô (multiplicação e divisão, só no 3º ano) ----------
+  const TEM_ATACADO = typeof ATACADO !== 'undefined';
+  const noAtacado = () => TEM_ATACADO && estado.parte === 'atacado';
+  // Chave do progresso e lista de fases da parte que está sendo jogada.
+  const chaveAtual = () => (noAtacado() ? 'atacado' : prefs.ano);
+  const cfgAtual = () => (noAtacado() ? ATACADO : ANOS[prefs.ano]);
+  const temAtacado = () => TEM_ATACADO && prefs.ano === ATACADO.ano;
 
   function estrelasDe(ano, i) {
     return (prefs.estrelas[ano] || [])[i] || 0;
@@ -775,6 +784,11 @@
     sacola: mecSacola, quantos: mecQuantos, comparar: mecComparar, sequencia: mecSequencia,
     valor: mecValor, parimpar: mecParImpar, dinheiro: mecDinheiro, grupos: mecGrupos,
   };
+  // Atacado do Robô: mecânicas em atacado.js.
+  if (typeof AtacadoAcessivel === 'function') {
+    Object.assign(MECANICAS, AtacadoAcessivel({ falar, vivo, semSons, comBraille, girar, contarAte }));
+  }
+  const TIPOS_ATACADO = ['montar', 'parcelas', 'retangulo', 'contas', 'repartir', 'cabem', 'relacao'];
 
   // =====================================================================
   // Telas e menu
@@ -785,7 +799,8 @@
   }
 
   function proximaFase(ano) {
-    const i = ANOS[ano].fases.findIndex((_, k) => !estrelasDe(ano, k));
+    const lista = ano === 'atacado' ? ATACADO.fases : ANOS[ano].fases;
+    const i = lista.findIndex((_, k) => !estrelasDe(ano, k));
     return i < 0 ? 0 : i;
   }
   const tituloAno = (ano) => `${ano}º ano`;
@@ -793,14 +808,23 @@
   function itensMenu() {
     const ano = prefs.ano;
     const n = proximaFase(ano);
+    const atacado = [];
+    if (temAtacado()) {
+      const na = proximaFase('atacado');
+      atacado.push(
+        { rotulo: `Atacado do Robô, multiplicação e divisão: jogar a fase ${na + 1}. ${paraFala(ATACADO.fases[na].pedido)}`, acao: () => { estado.parte = 'atacado'; abrirFase(na); } },
+        { rotulo: 'Escolher outra fase do Atacado do Robô', acao: () => { estado.parte = 'atacado'; abrirListaFases(); } },
+      );
+    }
     return [
-      { rotulo: `Jogar: ${tituloAno(ano)}, fase ${n + 1}. ${paraFala(ANOS[ano].fases[n].pedido)}`, acao: () => abrirFase(n) },
+      { rotulo: `Jogar: ${tituloAno(ano)}, fase ${n + 1}. ${paraFala(ANOS[ano].fases[n].pedido)}`, acao: () => { estado.parte = 'ano'; abrirFase(n); } },
       {
         ajuste: true,
-        rotulo: `Ano: ${tituloAno(ano)}, ${ANOS[ano].subtitulo.toLowerCase()}. Enter troca.`,
+        rotulo: `Ano: ${tituloAno(ano)}, ${ANOS[ano].subtitulo.toLowerCase()}${TEM_ATACADO && ano === ATACADO.ano ? ', com o Atacado do Robô' : ''}. Enter troca.`,
         acao: () => { prefs.ano = (prefs.ano % 3) + 1; salvar(); },
       },
-      { rotulo: `Escolher outra fase do ${tituloAno(ano)}`, acao: () => abrirListaFases() },
+      { rotulo: `Escolher outra fase do ${tituloAno(ano)}`, acao: () => { estado.parte = 'ano'; abrirListaFases(); } },
+      ...atacado,
       {
         ajuste: true,
         rotulo: `Voz do jogo: ${prefs.voz ? 'ligada' : 'desligada. O leitor de tela fala'}. Enter troca.`,
@@ -819,8 +843,8 @@
       {
         ajuste: true,
         rotulo: estado.confirmandoApagar
-          ? 'Tem certeza? Aperte Enter de novo para apagar as estrelas dos três anos, ou Esc para cancelar.'
-          : 'Apagar o progresso: as estrelas dos três anos.',
+          ? `Tem certeza? Aperte Enter de novo para apagar as estrelas dos três anos${TEM_ATACADO ? ' e do Atacado do Robô' : ''}, ou Esc para cancelar.`
+          : `Apagar o progresso: as estrelas dos três anos${TEM_ATACADO ? ' e do Atacado do Robô' : ''}.`,
         acao: () => {
           if (!estado.confirmandoApagar) {
             estado.confirmandoApagar = true;
@@ -846,9 +870,9 @@
   }
 
   function itensFases() {
-    const ano = prefs.ano;
+    const ano = chaveAtual();
     const itens = [{ rotulo: 'Voltar para o menu', acao: () => abrirMenu() }];
-    ANOS[ano].fases.forEach((f, i) => {
+    cfgAtual().fases.forEach((f, i) => {
       const est = estrelasDe(ano, i);
       itens.push({
         rotulo: `Fase ${i + 1}: ${paraFala(f.pedido)}${est ? ` Já feita, ${est} ${est === 1 ? 'estrela' : 'estrelas'}.` : ''}`,
@@ -908,7 +932,7 @@
 
   function abrirListaFases() {
     estado.tela = 'fases';
-    desenharMenu(itensFases(), `Fases do ${tituloAno(prefs.ano)}`, proximaFase(prefs.ano) + 1);
+    desenharMenu(itensFases(), noAtacado() ? 'Fases do Atacado do Robô' : `Fases do ${tituloAno(prefs.ano)}`, proximaFase(chaveAtual()) + 1);
     falar(`Escolha a fase com as setas para cima e para baixo. ${estado.menu[estado.foco].rotulo}`);
   }
 
@@ -928,7 +952,8 @@
   function abrirFase(indice) {
     novaSequencia();
     const ano = prefs.ano;
-    const fase = ANOS[ano].fases[indice];
+    const cfg = cfgAtual();
+    const fase = cfg.fases[indice];
     estado.tela = 'jogo';
     estado.indice = indice;
     estado.fase = fase;
@@ -937,13 +962,15 @@
     mostrarTela('jogo');
     $('#tela-jogo').classList.remove('venceu');
     $('#app').focus();
-    $('#titulo-jogo').textContent = `Fase ${indice + 1} de ${ANOS[ano].fases.length}`;
-    $('#ano-jogo').textContent = `${tituloAno(ano)} · ${ANOS[ano].subtitulo}`;
+    $('#titulo-jogo').textContent = `Fase ${indice + 1} de ${cfg.fases.length}`;
+    $('#ano-jogo').textContent = noAtacado() ? `${ATACADO.titulo} · ${tituloAno(ATACADO.ano)} · ${ATACADO.subtitulo}` : `${tituloAno(ano)} · ${ANOS[ano].subtitulo}`;
     $('#pedido').textContent = `${fase.cliente} ${fase.pedido}`;
     const teclas = estado.mec.teclas.concat([['Enter', 'conferir (Pronto!)'], ['Espaço', 'repete o pedido'], ['H', 'ajuda · Esc menu']]);
     $('#lista-teclas').innerHTML = teclas.map(([k, d]) => `<li><kbd>${k}</kbd> ${d}</li>`).join('');
     desenharQuadro();
-    const primeira = indice === 0 && ano === 1 ? 'Na feira, cada fase tem um pedido de um cliente. ' : '';
+    const primeira = noAtacado()
+      ? (indice === 0 ? 'Atacado do Robô: o robô agora também vende por atacado. Ele monta cestas, caixas e pacotes com quantidades iguais e reparte as mercadorias entre os clientes. ' : 'Atacado do Robô. ')
+      : indice === 0 && ano === 1 ? 'Na feira, cada fase tem um pedido de um cliente. ' : '';
     falar(`Fase ${indice + 1}. ${primeira}O cliente diz: ${fase.pedido} ${estado.mec.instrucao()}`);
   }
 
@@ -955,6 +982,11 @@
 
   function respostaNumerica() {
     const certa = Regras.respostaCerta(estado.fase);
+    if (TIPOS_ATACADO.includes(estado.fase.tipo)) {
+      if (typeof certa.total === 'number') return certa.total;
+      if (certa.respostas) return certa.respostas[0];
+      return certa[certa.length - 1];
+    }
     if (typeof certa === 'number') return estado.fase.tipo === 'dinheiro' ? Math.round(certa / 100) : certa;
     if (estado.fase.tipo === 'valor') return certa[0] * 100 + certa[1] * 10 + certa[2];
     if (estado.fase.tipo === 'grupos') return certa.total;
@@ -972,7 +1004,7 @@
   }
 
   async function vencer() {
-    const ano = prefs.ano;
+    const ano = chaveAtual();
     const est = Regras.estrelas(estado.tentativas);
     const lista = prefs.estrelas[ano] || [];
     lista[estado.indice] = Math.max(lista[estado.indice] || 0, est);
@@ -982,9 +1014,9 @@
     $('#tela-jogo').classList.add('venceu');
     desenharQuadro();
     Som.venceu();
-    const ultima = estado.indice >= ANOS[ano].fases.length - 1;
+    const ultima = estado.indice >= cfgAtual().fases.length - 1;
     const continuar = ultima
-      ? `Você terminou todas as fases do ${tituloAno(ano)}! Aperte Enter para voltar ao menu.`
+      ? `Você terminou todas as fases ${noAtacado() ? 'do Atacado do Robô' : `do ${tituloAno(ano)}`}! Aperte Enter para voltar ao menu.`
       : 'Aperte Enter para a próxima fase, ou Esc para o menu.';
     falar(`Muito bem! ${estado.mec.resumo()} Você ganhou ${est} ${est === 1 ? 'estrela' : 'estrelas'}. ${continuar}`);
   }
@@ -1032,7 +1064,7 @@
       else if (t === 'ArrowUp') { estado.foco = (estado.foco - 1 + estado.menu.length) % estado.menu.length; focarMenu(); }
       else if (t === 'Enter') confirmarMenu();
       else if (t === ' ') falar(`${estado.menu[estado.foco].rotulo}. Use as setas para cima e para baixo, e Enter para escolher.`);
-      else if (t === 'Escape' && estado.tela === 'fases') abrirMenu(2);
+      else if (t === 'Escape' && estado.tela === 'fases') abrirMenu(noAtacado() ? 4 : 2);
       else if (t === 'ArrowLeft' || t === 'ArrowRight') falar('No menu, use as setas para cima e para baixo.');
       return;
     }
@@ -1043,7 +1075,7 @@
 
     if (estado.tela === 'vitoria') {
       if (t === 'Enter') {
-        if (estado.indice >= ANOS[prefs.ano].fases.length - 1) abrirMenu();
+        if (estado.indice >= cfgAtual().fases.length - 1) abrirMenu();
         else abrirFase(estado.indice + 1);
       } else if (t === ' ') {
         falar(`${estado.mec.resumo()} Aperte Enter para continuar.`);

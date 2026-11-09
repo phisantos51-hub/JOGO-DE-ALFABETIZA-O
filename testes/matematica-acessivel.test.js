@@ -4,6 +4,7 @@
 // Uso: node testes/matematica-acessivel.test.js
 const assert = require('assert');
 const { ANOS } = require('../matematica/js/fases.js');
+const { ATACADO } = require('../matematica/js/atacado-fases.js');
 const D = require('../matematica/acessivel/dados.js');
 
 const emojis = new Set();
@@ -24,6 +25,16 @@ for (const ano of Object.keys(ANOS)) {
     assert(!/\p{Extended_Pictographic}/u.test(falado), `${nome}: emoji na fala`);
   });
 }
+// Atacado do Robô (3º ano): as frutas têm nome e os pedidos viram fala.
+ATACADO.fases.forEach((f, i) => {
+  const nome = `Atacado fase ${i + 1}`;
+  emojis.add(f.fruta);
+  const falado = D.paraFala(f.pedido);
+  assert(!/[−×÷=]/.test(falado), `${nome}: símbolo sobrando na fala: ${falado}`);
+  assert(!/\p{Lu}{2,}/u.test(falado), `${nome}: palavra em maiúsculas seria soletrada: ${falado}`);
+  assert(!/\p{Extended_Pictographic}/u.test(falado), `${nome}: emoji na fala`);
+  (f.contas || []).forEach((c) => assert(!/[×÷]/.test(D.paraFala(c)), `${nome}: conta sem fala`));
+});
 emojis.forEach((e) => {
   assert(D.FRUTAS[e], `fruta sem nome: ${e}`);
   assert(['m', 'f'].includes(D.FRUTAS[e][2]), `fruta sem gênero: ${e}`);
@@ -33,6 +44,8 @@ dinheiro.forEach((v) => assert(!/undefined|NaN/.test(D.nomeDinheiro(v)), `dinhei
 assert.strictEqual(D.paraFala('R$ 3,50'), '3 reais e 50 centavos');
 assert.strictEqual(D.paraFala('R$ 1,00'), '1 real');
 assert.strictEqual(D.paraFala('52 − 18 = 34'), '52 menos 18 é igual a 34');
+assert.strictEqual(D.paraFala('12 ÷ 4 = 3'), '12 dividido por 4 é igual a 3');
+assert.strictEqual(D.paraFala('4 × 3 = 12'), '4 vezes 3 é igual a 12');
 assert.strictEqual(D.nomeDinheiro(100), 'moeda de 1 real');
 assert.strictEqual(D.nomeDinheiro(1000), 'nota de 10 reais');
 assert.strictEqual(D.solta('🍋', 10), 'soltos');
